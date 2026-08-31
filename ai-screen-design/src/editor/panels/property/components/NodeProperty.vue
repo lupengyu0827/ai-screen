@@ -58,6 +58,20 @@ const layoutSetters = [
     span: 12,
     props: { min: -360, max: 360 },
   },
+  {
+    label: '缩放X',
+    key: 'layout.scaleX',
+    type: 'number',
+    span: 12,
+    props: { min: 0.1, max: 3, step: 0.05 },
+  },
+  {
+    label: '缩放Y',
+    key: 'layout.scaleY',
+    type: 'number',
+    span: 12,
+    props: { min: 0.1, max: 3, step: 0.05 },
+  },
 ]
 
 // 通用样式（GoView 风格），作用于节点内层包装

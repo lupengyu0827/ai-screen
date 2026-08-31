@@ -2,6 +2,51 @@ import type { DataSourceSchema } from '@/schema/page'
 import axios from 'axios'
 import { getValue } from '@/utils'
 
+/**
+ * 数据后处理：字段映射 + 数据转换函数
+ * 字段映射重命名数组项 / 对象键；转换函数接收 data 返回新数据
+ */
+export function applyTransform(src: DataSourceSchema, rawData: any) {
+  let result = rawData
+
+  // 字段映射：重命名数组项 / 对象键
+  // 兼容 fieldMap 为 JSON 字符串（编辑器面板未保存状态）的情况
+  let fieldMap = src.fieldMap
+  if (typeof fieldMap === 'string') {
+    try {
+      fieldMap = JSON.parse(fieldMap)
+    } catch {
+      fieldMap = undefined
+    }
+  }
+  if (fieldMap && Object.keys(fieldMap).length) {
+    const remap = (item: any) => {
+      const mapped: Record<string, any> = {}
+      Object.entries(item || {}).forEach(([k, v]) => {
+        mapped[fieldMap![k] || k] = v
+      })
+      return mapped
+    }
+    if (Array.isArray(result)) {
+      result = result.map(remap)
+    } else if (result && typeof result === 'object') {
+      result = remap(result)
+    }
+  }
+
+  // 数据转换函数：执行 JS 箭头函数
+  if (src.transform && src.transform.trim()) {
+    try {
+      const fn = new Function('data', `return (${src.transform})(data)`)
+      result = fn(result)
+    } catch (e) {
+      console.error('数据转换函数执行失败:', e)
+    }
+  }
+
+  return result
+}
+
 export function useDataSource(dataId: Ref<string>) {
   const dataSources = inject<Ref<DataSourceSchema[]>>('dataSources')
   const loading = ref(false)
@@ -27,7 +72,7 @@ export function useDataSource(dataId: Ref<string>) {
         // 等一个promsie
         const res = await fetchData(source.value, params)
 
-        data.value = res
+        data.value = applyTransform(source.value, res)
       } catch (e) {
         error.value = e
       } finally {
@@ -41,7 +86,7 @@ export function useDataSource(dataId: Ref<string>) {
       }
     } else {
       // 静态数据
-      data.value = source.value.data
+      data.value = applyTransform(source.value, source.value.data)
     }
   }
 

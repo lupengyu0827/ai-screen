@@ -6,7 +6,7 @@ import { defineComponent } from 'vue'
 import { deepClone } from '@/utils/index'
 
 import MonacoEditor from '@/components/MonacoEditor/index.vue'
-import { fetchData } from '@/composables/useDataSource'
+import { fetchData, applyTransform } from '@/composables/useDataSource'
 
 defineComponent({
   name: 'DataSourceManager',
@@ -25,7 +25,7 @@ const data = ref(deepClone(dataSources.value).map(item => {
     ...item,
     data: item.data ? JSON.stringify(item.data, null, 2) : undefined,
     params: item.params ? JSON.stringify(item.params, null, 2) : undefined,
-
+    fieldMap: item.fieldMap ? JSON.stringify(item.fieldMap, null, 2) : '{}',
   }
 }))
 const responseText = ref()
@@ -41,6 +41,7 @@ function onAdd() {
     type: 'static',
     data: '',
     params: '{}',
+    fieldMap: '{}',
   })
 
   selectDataSource(data.value.at(-1))
@@ -56,8 +57,24 @@ function onRequest() {
     ...activeSource.value,
     params: activeSource.value.params ? JSON.parse(activeSource.value.params) : undefined,
   }).then(res => {
-    responseText.value = JSON.stringify(res, null, 2)
+    responseText.value = JSON.stringify(applyTransform(activeSource.value, res), null, 2)
   })
+}
+
+/**
+ * 转换预览：静态解析 data、API 走请求，统一展示字段映射/转换后的结果
+ */
+function onPreview() {
+  if (activeSource.value.type === 'static') {
+    try {
+      const raw = JSON.parse(activeSource.value.data || '[]')
+      responseText.value = JSON.stringify(applyTransform(activeSource.value, raw), null, 2)
+    } catch (e) {
+      responseText.value = '静态数据解析失败: ' + (e as Error).message
+    }
+  } else {
+    onRequest()
+  }
 }
 
 defineExpose({
@@ -67,6 +84,7 @@ defineExpose({
         ...item,
         data: item.data ? JSON.parse(item.data) : undefined,
         params: item.params ? JSON.parse(item.params) : undefined,
+        fieldMap: item.fieldMap ? JSON.parse(item.fieldMap) : undefined,
       }
     })
 
@@ -74,8 +92,6 @@ defineExpose({
     editorStore.page.dataSources = _data
   },
 })
-
-
 </script>
 
 <template>
@@ -130,6 +146,20 @@ defineExpose({
             <MonacoEditor v-model="responseText"></MonacoEditor>
           </el-form-item>
         </div>
+        <el-form-item label="字段映射">
+          <el-input v-model="activeSource.fieldMap" type="textarea" :rows="2"
+            placeholder='{"旧字段":"新字段"}'></el-input>
+        </el-form-item>
+        <el-form-item label="数据转换">
+          <el-input v-model="activeSource.transform" type="textarea" :rows="2"
+            placeholder="(data) => data.filter(item => item.value > 100)"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onPreview">转换预览</el-button>
+        </el-form-item>
+        <el-form-item label="预览数据" v-if="responseText !== undefined">
+          <MonacoEditor v-model="responseText"></MonacoEditor>
+        </el-form-item>
       </el-form>
     </div>
   </div>

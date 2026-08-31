@@ -21,7 +21,14 @@ export function buildNodeInnerStyle(node: MaterialSchema) {
   const s = node.style || {}
   const styles: Record<string, any> = {}
 
-  if (s.rotation) styles.transform = `rotate(${s.rotation}deg)`
+  // 旋转 + 缩放组合变换
+  const transforms: string[] = []
+  if (s.rotation) transforms.push(`rotate(${s.rotation}deg)`)
+  const sx = node.layout.scaleX ?? 1
+  const sy = node.layout.scaleY ?? 1
+  if (sx !== 1 || sy !== 1) transforms.push(`scale(${sx}, ${sy})`)
+  if (transforms.length) styles.transform = transforms.join(' ')
+
   if (s.borderRadius != null) styles.borderRadius = s.borderRadius + 'px'
   if (s.borderWidth != null || s.borderColor) {
     styles.border = `${s.borderWidth ?? 0}px solid ${s.borderColor || 'transparent'}`

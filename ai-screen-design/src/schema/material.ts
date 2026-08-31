@@ -5,6 +5,9 @@ interface Layout {
   y: number
   width: number
   height: number
+  // 缩放比例（默认 1）
+  scaleX?: number
+  scaleY?: number
 }
 
 export interface MaterialEvent {

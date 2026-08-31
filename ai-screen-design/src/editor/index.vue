@@ -48,7 +48,7 @@ const aiWidth = computed(() => (editorStore.panelVisible.ai ? '460px' : 0))
         <span class="brand-divider"></span>
         <span class="brand-slogan">智能驱动 · 可视化搭建</span>
       </div>
-      <div class="flex items-center gap-8 pr-4">
+      <div class="flex items-center gap-8 pr-4 mr-20">
         <ThemeSwitch />
       </div>
       <ToolbarRight />
