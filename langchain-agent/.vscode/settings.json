@@ -1,0 +1,45 @@
+{
+  // 编辑器外观
+  "editor.fontFamily": "JetBrains Mono",
+  "editor.fontSize": 14,
+  "editor.lineHeight": 1.5,
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.rulers": [120],
+  "workbench.colorTheme": "Darcula Theme",
+
+  // 保存自动格式化（WebStorm保存自动修复）
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // eslint校验文件类型
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+
+  // 文件图标，更接近jetbrains风格
+  "workbench.iconTheme": "vscode-icons",
+
+  // 滚动字体缩放（webstorm经典功能）
+  "editor.mouseWheelZoom": true,
+
+  // 自动关闭括号引号
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+
+  // 排除不需要搜索的文件夹，和webstorm忽略目录逻辑一致
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/dist": true
+  },
+
+  // 终端字体
+  "terminal.integrated.fontFamily": "JetBrains Mono"
+}
