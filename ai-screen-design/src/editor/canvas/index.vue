@@ -12,6 +12,8 @@ import { storeToRefs } from 'pinia'
 import { useCanvasRuler } from './composables/useCanvasRuler';
 import { useMoveable } from './composables/useMoveable'
 import { useSelection } from './composables/useSelection'
+import { mapCanvasBg } from '@/composables/useTheme'
+import { buildNodeOuterStyle, buildNodeInnerStyle } from '@/utils/nodeStyle'
 
 defineComponent({
   name: 'CanvasRoot',
@@ -70,13 +72,11 @@ function onDrop(e: DragEvent) {
  * 移动修改css属性
  */
 function getNodeStyle(node: MaterialSchema, index: number) {
-  return {
-    width: node.layout.width + 'px',
-    height: node.layout.height + 'px',
-    left: node.layout.x + 'px',
-    top: node.layout.y + 'px',
-    zIndex: index + 1,
-  }
+  return buildNodeOuterStyle(node, index)
+}
+
+function getNodeInnerStyle(node: MaterialSchema) {
+  return buildNodeInnerStyle(node)
 }
 
 // css实现指定的顺序颠倒 所以置顶置底方法相互调用
@@ -105,7 +105,9 @@ function onCommand(command: string) {
         <el-dropdown v-for="(node, index) in nodes" :key="node.id" trigger="contextmenu" @command="onCommand">
           <div class="canvas-node" :style="getNodeStyle(node, index)" :data-node-id="node.id"
             :data-node-locked="node.locked" @mousedown="onSelect(node, $event)">
-            <component :is="getMaterialComponent(node.type)" :schema="node"></component>
+            <div class="canvas-node-inner h-full w-full" :style="getNodeInnerStyle(node)">
+              <component :is="getMaterialComponent(node.type)" :schema="node"></component>
+            </div>
           </div>
           <template #dropdown>
             <el-dropdown-item command="copy">复制</el-dropdown-item>

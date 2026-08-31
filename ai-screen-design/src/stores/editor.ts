@@ -17,7 +17,7 @@ export const useEditorStore = defineStore('editor', () => {
     canvas: {
       width: 1800,
       height: 1169,
-      backgroundColor: '#0d121b',
+      backgroundColor: 'var(--bg-base)',
     },
     nodes: [],
     dataSources: [

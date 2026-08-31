@@ -30,12 +30,14 @@ const layoutSetters = [
     key: 'layout.width',
     type: 'number',
     span: 12,
+    props: { min: 1 },
   },
   {
     label: '高度',
     key: 'layout.height',
     type: 'number',
     span: 12,
+    props: { min: 1 },
   },
   {
     label: 'X',
@@ -48,6 +50,66 @@ const layoutSetters = [
     key: 'layout.y',
     type: 'number',
     span: 12,
+  },
+  {
+    label: '旋转',
+    key: 'style.rotation',
+    type: 'number',
+    span: 12,
+    props: { min: -360, max: 360 },
+  },
+]
+
+// 通用样式（GoView 风格），作用于节点内层包装
+const styleSetters = [
+  {
+    label: '透明度',
+    key: 'style.opacity',
+    type: 'number',
+    span: 12,
+    props: { min: 0, max: 1, step: 0.05, precision: 2 },
+  },
+  {
+    label: '圆角',
+    key: 'style.borderRadius',
+    type: 'number',
+    span: 12,
+    props: { min: 0 },
+  },
+  {
+    label: '边框宽度',
+    key: 'style.borderWidth',
+    type: 'number',
+    span: 12,
+    props: { min: 0 },
+  },
+  {
+    label: '边框颜色',
+    key: 'style.borderColor',
+    type: 'color',
+    span: 12,
+  },
+  {
+    label: '阴影',
+    key: 'style.boxShadow',
+    type: 'input',
+    span: 24,
+    props: {
+      placeholder: '如 0 4px 12px rgba(0,0,0,0.5)',
+    },
+  },
+  {
+    label: '背景色',
+    key: 'style.backgroundColor',
+    type: 'color',
+    span: 12,
+  },
+  {
+    label: '内边距',
+    key: 'style.padding',
+    type: 'number',
+    span: 12,
+    props: { min: 0 },
   },
 ]
 
@@ -104,10 +166,22 @@ function onConfirmEvent() {
     <el-tabs v-model="activeTab" stretch class="property-tabs flex-1 min-h-0">
       <el-tab-pane label="属性" name="property">
         <el-collapse v-model="active" accordion>
-          <el-collapse-item title="布局属性" name="layout">
+          <el-collapse-item name="layout">
+            <template #title>
+              <span class="collapse-title"><Icon icon="solar:ruler-angled-bold" width="14" /> 布局属性</span>
+            </template>
             <form-create :setters="layoutSetters" :formData="selectedNode"></form-create>
           </el-collapse-item>
-          <el-collapse-item title="组件属性" name="node">
+          <el-collapse-item name="style">
+            <template #title>
+              <span class="collapse-title"><Icon icon="solar:palette-round-bold" width="14" /> 通用样式</span>
+            </template>
+            <form-create :setters="styleSetters" :formData="selectedNode"></form-create>
+          </el-collapse-item>
+          <el-collapse-item name="node">
+            <template #title>
+              <span class="collapse-title"><Icon icon="solar:widget-bold" width="14" /> 组件属性</span>
+            </template>
             <form-create :setters="setters" :formData="selectedNode"></form-create>
           </el-collapse-item>
         </el-collapse>
@@ -206,11 +280,31 @@ function onConfirmEvent() {
     border-bottom: 1px solid var(--el-collapse-border-color);
 
     .el-collapse-item__header {
-      padding-left: 16px;
+      padding-left: 12px;
+      font-weight: 600;
+
+      .collapse-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-secondary);
+
+        svg {
+          color: var(--text-muted);
+        }
+      }
 
       &:hover {
         color: var(--text-primary);
+
+        .collapse-title svg {
+          color: var(--accent);
+        }
       }
+    }
+
+    .el-collapse-item__arrow {
+      margin-right: 10px;
     }
   }
 }
