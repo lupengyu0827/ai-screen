@@ -39,12 +39,17 @@ const aiWidth = computed(() => (editorStore.panelVisible.ai ? '460px' : 0))
 </script>
 <template>
   <div class="editor h-screen select-none">
-    <header class="h-56 header flex items-center px-20">
+    <header class="header flex items-center px-20">
       <ToolbarLeft />
-      <div class="flex-1 text-center">中间</div>
+      <div class="flex-1 brand text-center">
+        <span class="brand-logo"></span>
+        <span class="brand-name">AI 大屏设计器</span>
+        <span class="brand-divider"></span>
+        <span class="brand-slogan">智能驱动 · 可视化搭建</span>
+      </div>
       <ToolbarRight />
     </header>
-    <main class="h-[calc(100vh-56px)] flex">
+    <main class="main flex">
       <!-- 物料区 -->
       <MaterialPanel class="material overflow-hidden transition-all" :style="{ width: materialWidth }" />
       <!-- 图层区 -->
@@ -61,10 +66,56 @@ const aiWidth = computed(() => (editorStore.panelVisible.ai ? '460px' : 0))
 
 <style scoped lang="scss">
 .editor {
-  background-color: var(--background-color);
+  background-color: var(--bg-base);
+  display: flex;
+  flex-direction: column;
 
   .header {
+    flex: none;
+    height: var(--toolbar-height);
     border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(180deg, var(--bg-elevated), var(--bg-panel));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    position: relative;
+    z-index: 10;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+
+      .brand-logo {
+        width: 20px;
+        height: 20px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+        box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+      }
+
+      .brand-name {
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: var(--text-primary);
+      }
+
+      .brand-divider {
+        width: 1px;
+        height: 14px;
+        background: var(--border-color-light);
+      }
+
+      .brand-slogan {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+    }
+  }
+
+  .main {
+    flex: 1;
+    min-height: 0;
   }
 
   .material,

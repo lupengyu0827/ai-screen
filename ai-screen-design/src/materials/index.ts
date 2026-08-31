@@ -27,7 +27,22 @@ const groups = [
     key: 'charts',
   },
   {
-    name: '表单',
+    name: '数字',
+    icon: 'solar:hashtag-square-bold',
+    key: 'number',
+  },
+  {
+    name: '媒体',
+    icon: 'solar:gallery-bold',
+    key: 'media',
+  },
+  {
+    name: '装饰',
+    icon: 'solar:widget-4-bold',
+    key: 'decorate',
+  },
+  {
+    name: '基础',
     icon: 'ant-design:form-outlined',
     key: 'info',
   },

@@ -14,13 +14,20 @@ useDraggable('.layer-panel', nodes, { animation: 150, direction: 'horizontal' })
 </script>
 
 <template>
-  <div class="h-full">
-    <div class="h-full layer-panel overflow-auto">
+  <div class="h-full layer-root flex flex-col">
+    <div class="layer-header">
+      <span>图层</span>
+      <span class="count">{{ nodes.length }}</span>
+    </div>
+    <div class="layer-panel overflow-auto">
       <div v-for="node in nodes" :key="node.id" :class="{ active: selectedNodeIds.includes(node.id) }"
         @click="editorStore.selectNode(node.id)">
-        <span>{{ node.name }}</span>
-        <span>
-          <Icon icon="fluent:list-bar-24-filled"></Icon>
+        <span class="node-name">
+          <Icon :icon="node.locked ? 'fluent:lock-16-filled' : 'fluent:list-bar-24-filled'"></Icon>
+          {{ node.name }}
+        </span>
+        <span class="node-state">
+          <Icon v-if="node.locked" icon="fluent:lock-16-filled"></Icon>
         </span>
       </div>
     </div>
@@ -28,28 +35,82 @@ useDraggable('.layer-panel', nodes, { animation: 150, direction: 'horizontal' })
 </template>
 
 <style scoped lang="scss">
-.layer-panel {
-  background: bg-mix(50);
-  padding: 10px;
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: start;
+.layer-root {
+  background: var(--bg-panel);
 
-  &>div {
-    margin-top: 4px;
-    cursor: pointer;
+  .layer-header {
+    height: var(--panel-header-height);
+    flex: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 10px;
-    height: 30px;
-    border: 1px solid var(--border-color);
-    background: bg-mix(70);
+    padding: 0 12px;
+    border-bottom: 1px solid var(--border-color);
     font-size: 12px;
-    border-radius: 4px;
+    font-weight: 600;
+    color: var(--text-secondary);
 
-    &.active {
-      background: #0e8ad7;
+    .count {
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      border-radius: 9px;
+      background: var(--bg-elevated);
+      color: var(--text-muted);
+    }
+  }
+
+  .layer-panel {
+    flex: 1;
+    background: var(--bg-panel);
+    padding: 10px;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: start;
+
+    &>div {
+      margin-top: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 0 10px;
+      height: 30px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-elevated);
+      font-size: 12px;
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      transition: all 160ms ease;
+
+      .node-name {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .node-state {
+        color: var(--text-muted);
+      }
+
+      &:hover {
+        border-color: var(--border-color-light);
+        background: var(--bg-hover);
+      }
+
+      &.active {
+        background: linear-gradient(90deg, var(--bg-active), rgba(14, 138, 215, 0.4));
+        border-color: #3fa9e3;
+        color: #fff;
+      }
     }
   }
 }

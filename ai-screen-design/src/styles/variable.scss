@@ -1,4 +1,118 @@
+/**
+ * 全局设计 Token（多主题）
+ * 通过 html[data-theme] 切换主题；未设置时使用默认主题 deep-blue
+ * 组件应尽量引用 var(--accent) / rgba(var(--accent-rgb), x) 等变量，保证主题联动
+ */
 :root {
-  --border-color: #334151;
+  /* ===== 基础色板 ===== */
   --background-color: #1b2346;
+  --border-color: #334151;
+
+  /* ===== 层级背景 ===== */
+  --bg-base: #0d121b;
+  --bg-panel: #1b2346;
+  --bg-elevated: #232e50;
+  --bg-hover: #2c3a63;
+  --bg-active: #0e8ad7;
+  --bg-overlay: rgba(13, 18, 27, 0.62);
+
+  /* ===== 边框 ===== */
+  --border-color-light: #3d4b61;
+  --border-color-active: #22d3ee;
+
+  /* ===== 文字 ===== */
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* ===== 主题强调色 ===== */
+  --accent: #22d3ee;
+  --accent-rgb: 34, 211, 238; /* accent 的 RGB 分量，用于 rgba(var(--accent-rgb), 0.3) */
+  --accent-secondary: #a78bfa;
+
+  /* ===== 状态色 ===== */
+  --success: #34d399;
+  --warning: #f59e0b;
+  --danger: #fb7185;
+
+  /* ===== 圆角 / 阴影 / 尺寸 ===== */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --shadow-panel: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --toolbar-height: 56px;
+  --panel-header-height: 40px;
+}
+
+/* ===== 主题：极光紫 ===== */
+[data-theme='aurora'] {
+  --background-color: #171233;
+  --border-color: #38295c;
+
+  --bg-base: #0d091f;
+  --bg-panel: #171233;
+  --bg-elevated: #221a45;
+  --bg-hover: #2d2357;
+  --bg-active: #7c3aed;
+  --bg-overlay: rgba(13, 9, 31, 0.62);
+
+  --border-color-light: #453471;
+  --border-color-active: #a78bfa;
+
+  --text-primary: #ede9fe;
+  --text-secondary: #b6a8e8;
+  --text-muted: #7a6ba8;
+
+  --accent: #a78bfa;
+  --accent-rgb: 167, 139, 250;
+  --accent-secondary: #22d3ee;
+}
+
+/* ===== 主题：暗夜金 ===== */
+[data-theme='gold'] {
+  --background-color: #1e1810;
+  --border-color: #3d3220;
+
+  --bg-base: #14100a;
+  --bg-panel: #1e1810;
+  --bg-elevated: #2a2115;
+  --bg-hover: #372b18;
+  --bg-active: #d97706;
+  --bg-overlay: rgba(20, 16, 10, 0.62);
+
+  --border-color-light: #4a3d26;
+  --border-color-active: #f59e0b;
+
+  --text-primary: #fef3c7;
+  --text-secondary: #d4b06a;
+  --text-muted: #9a7b45;
+
+  --accent: #f59e0b;
+  --accent-rgb: 245, 158, 11;
+  --accent-secondary: #fb923c;
+}
+
+/* ===== 主题：翡翠绿 ===== */
+[data-theme='emerald'] {
+  --background-color: #0f1f1b;
+  --border-color: #1f4a40;
+
+  --bg-base: #081210;
+  --bg-panel: #0f1f1b;
+  --bg-elevated: #16302a;
+  --bg-hover: #1e3f37;
+  --bg-active: #059669;
+  --bg-overlay: rgba(8, 18, 16, 0.62);
+
+  --border-color-light: #28594d;
+  --border-color-active: #34d399;
+
+  --text-primary: #d1fae5;
+  --text-secondary: #86d6b4;
+  --text-muted: #4f8a72;
+
+  --accent: #34d399;
+  --accent-rgb: 52, 211, 153;
+  --accent-secondary: #22d3ee;
 }

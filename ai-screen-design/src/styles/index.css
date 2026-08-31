@@ -4,4 +4,23 @@
 
 @theme {
   --spacing: 1px;
+
+  /* ===== 设计 Token 的 Tailwind 别名（与 variable.scss 联动） ===== */
+  --color-canvas: var(--bg-base); /* 画布 / 最底层 */
+  --color-panel: var(--bg-panel); /* 面板 */
+  --color-elevated: var(--bg-elevated); /* 卡片 / 悬浮层 */
+  --color-hover: var(--bg-hover); /* hover 层 */
+
+  --color-accent: var(--accent); /* 主强调色 */
+  --color-accent-2: var(--accent-secondary); /* 次级强调色 */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --color-line: var(--border-color); /* 边框 */
+  --color-line-light: var(--border-color-light); /* 浅边框 */
+
+  --color-ink: var(--text-primary); /* 主文字 */
+  --color-ink-2: var(--text-secondary); /* 次要文字 */
+  --color-ink-3: var(--text-muted); /* 弱化文字 */
 }

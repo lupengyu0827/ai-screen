@@ -39,4 +39,16 @@ const { applyChange, startBatch, commitBatch } = useUndoRedo()
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep(.el-form-item) {
+  margin-bottom: 12px;
+}
+
+:deep(.el-form-item__label) {
+  color: var(--text-secondary);
+}
+
+:deep(.el-input-number) {
+  width: 100%;
+}
+</style>

@@ -44,6 +44,32 @@ const ChartGridSchema = z
   .partial()
   .describe('直角坐标系绘图区配置')
 
+const ChartRadarSchema = z
+  .object({
+    indicator: z
+      .array(
+        z.object({
+          name: z.string().describe('雷达图指标名称'),
+          max: z.number().describe('指标最大值'),
+        }),
+      )
+      .describe('雷达图指标列表'),
+    radius: z.union([z.string(), z.number()]).optional().describe('雷达图半径'),
+    axisName: JsonObjectSchema.optional().describe('雷达图指标名称样式'),
+    splitLine: JsonObjectSchema.optional().describe('雷达图分割线样式'),
+    splitArea: JsonObjectSchema.optional().describe('雷达图分割区域样式'),
+    axisLine: JsonObjectSchema.optional().describe('雷达图轴线样式'),
+  })
+  .describe('ECharts 雷达图坐标系配置')
+
+const ChartGaugeSchema = z
+  .object({
+    detail: JsonObjectSchema.optional().describe('仪表盘数值样式'),
+    axisLine: JsonObjectSchema.optional().describe('仪表盘刻度轴线样式'),
+    pointer: JsonObjectSchema.optional().describe('仪表盘指针样式'),
+  })
+  .describe('ECharts 仪表盘系列配置')
+
 export const ChartOptionSchema = z
   .object({
     color: z.array(z.string()).optional().describe('图表系列颜色列表'),
@@ -54,6 +80,8 @@ export const ChartOptionSchema = z
     grid: ChartGridSchema.optional(),
     xAxis: JsonObjectSchema.optional().describe('ECharts X 轴配置'),
     yAxis: JsonObjectSchema.optional().describe('ECharts Y 轴配置'),
+    radar: ChartRadarSchema.optional().describe('ECharts 雷达图坐标系配置'),
+    gauge: ChartGaugeSchema.optional().describe('ECharts 仪表盘配置'),
     series: z
       .array(JsonObjectSchema)
       .min(1)
@@ -72,7 +100,13 @@ export const ChartConfigSchema = z
   .describe('图表物料独有的 props 配置')
 
 export function createChartNodeSchema(
-  type: 'bar-chart' | 'line-chart' | 'area-chart' | 'pie-chart',
+  type:
+    | 'bar-chart'
+    | 'line-chart'
+    | 'area-chart'
+    | 'pie-chart'
+    | 'radar-chart'
+    | 'gauge-chart',
 ) {
   return NodeBaseSchema.extend({
     type: z.literal(type).describe('图表物料的注册类型'),

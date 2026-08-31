@@ -16,9 +16,9 @@ const currentGroupMaterials = computed(() => {
 
 <template>
   <div class="material-panel flex">
-    <div class="nav w-50">
+    <div class="nav">
       <div v-for="item in groups" :key="item.key" :class="{ 'active': activeGroup === item.key }"
-        @click="activeGroup = item.key">
+        :title="item.name" @click="activeGroup = item.key">
         <span>
           <Icon :icon="item.icon" width="16"></Icon>
         </span>
@@ -26,6 +26,10 @@ const currentGroupMaterials = computed(() => {
       </div>
     </div>
     <div class="material-list flex-1 p-10 overflow-auto">
+      <div class="list-header">
+        {{ groups.find((g) => g.key === activeGroup)?.name }}
+        <span class="count">{{ currentGroupMaterials.length }}</span>
+      </div>
       <MaterialItem class="mt-10" v-for="item in currentGroupMaterials" :key="item.name" :material="item">
       </MaterialItem>
     </div>
@@ -34,26 +38,63 @@ const currentGroupMaterials = computed(() => {
 
 <style scoped lang="scss">
 .material-panel {
-  background: bg-mix(20);
+  background: var(--bg-panel);
 
   .nav {
+    width: 52px;
+    flex: none;
     border-right: 1px solid var(--border-color);
     cursor: pointer;
 
     div {
-      height: 50px;
+      height: 52px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      gap: 3px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      transition: all 180ms ease;
+
+      &:hover {
+        color: var(--text-primary);
+        background-color: var(--bg-hover);
+      }
 
       &.active {
-        background-color: bg-mix(70);
-        cursor: pointer;
+        color: var(--accent);
+        background: linear-gradient(90deg, rgba(34, 211, 238, 0.16), transparent);
+        border-left: 2px solid var(--accent);
       }
     }
+  }
 
+  .material-list {
+    background: var(--bg-panel);
+
+    .list-header {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+
+      .count {
+        min-width: 18px;
+        height: 18px;
+        padding: 0 5px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        border-radius: 9px;
+        background: var(--bg-elevated);
+        color: var(--text-muted);
+      }
+    }
   }
 }
 </style>

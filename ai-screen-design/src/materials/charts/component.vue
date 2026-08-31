@@ -28,15 +28,22 @@ const dataId = computed(() => props.schema.dataId)
 const { data, loading, refresh } = useDataSource(dataId)
 
 const option = computed(() => {
-  const _option = props.schema.props.option
+  const _option = props.schema.props.option || {}
+
+  // 仅当图表配置了 dataset 时才重写数据源（雷达图/仪表盘等无 dataset 的图表保持原样）
+  const hasDataset = !!(_option.dataset && _option.dataset.source)
 
   return {
     ..._option,
-    dataset: {
-      ..._option.dataset,
-      // 重写source 如果存在就使用，不存在就使用默认值
-      source: data.value || _option.dataset.source
-    }
+    ...(hasDataset
+      ? {
+          dataset: {
+            ..._option.dataset,
+            // 重写source 如果存在就使用，不存在就使用默认值
+            source: data.value || _option.dataset.source,
+          },
+        }
+      : {}),
   }
 })
 

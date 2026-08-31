@@ -89,6 +89,6 @@ async function onDelete() {
 
 <style scoped lang="scss">
 .ai-panel {
-  background: bg-mix(40);
+  background: var(--bg-panel);
 }
 </style>

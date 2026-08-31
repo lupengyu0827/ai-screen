@@ -60,15 +60,19 @@ function onImport() {
 
 async function onFileChange(event) {
   const file: File = event.target.files[0]
-  if (file) return
+  if (!file) return
   const text = await file.text()
 
   try {
     const newPage = JSON.parse(text)
 
     editorStore.setPage(newPage)
+    ElMessage.success('导入成功')
   } catch {
     ElMessage.error('JSON 格式错误')
+  } finally {
+    // 重置 input，保证同一文件可重复导入
+    event.target.value = ''
   }
 }
 
@@ -100,27 +104,41 @@ function showAiPanel() {
 
 <template>
   <div class="toolbar-right flex gap-20 justify-end">
-    <span @click="showAiPanel">
-      <Icon icon="mingcute:ai-fill"></Icon>
-    </span>
-    <span @click="onPreview">
-      <Icon icon="fluent:preview-link-16-filled"></Icon>
-    </span>
-    <span @click="previewJson">
-      <Icon icon="si:json-duotone"></Icon>
-    </span>
-    <span @click="onPublish">
-      <Icon icon="entypo:publish"></Icon>
-    </span>
-    <span @click="openDataSource">
-      <Icon icon="mdi:database"></Icon>
-    </span>
-    <span @click="onImport">
-      <Icon icon="mdi:import"></Icon>
-    </span>
-    <span @click="onExport">
-      <Icon icon="mdi:export"></Icon>
-    </span>
+    <el-tooltip content="AI 助手" placement="bottom" :show-after="300">
+      <span :class="{ active: editorStore.panelVisible.ai }" @click="showAiPanel">
+        <Icon icon="mingcute:ai-fill"></Icon>
+      </span>
+    </el-tooltip>
+    <el-tooltip content="预览" placement="bottom" :show-after="300">
+      <span @click="onPreview">
+        <Icon icon="fluent:preview-link-16-filled"></Icon>
+      </span>
+    </el-tooltip>
+    <el-tooltip content="编辑 JSON" placement="bottom" :show-after="300">
+      <span @click="previewJson">
+        <Icon icon="si:json-duotone"></Icon>
+      </span>
+    </el-tooltip>
+    <el-tooltip content="发布" placement="bottom" :show-after="300">
+      <span class="publish" @click="onPublish">
+        <Icon icon="entypo:publish"></Icon>
+      </span>
+    </el-tooltip>
+    <el-tooltip content="数据源" placement="bottom" :show-after="300">
+      <span @click="openDataSource">
+        <Icon icon="mdi:database"></Icon>
+      </span>
+    </el-tooltip>
+    <el-tooltip content="导入" placement="bottom" :show-after="300">
+      <span @click="onImport">
+        <Icon icon="mdi:import"></Icon>
+      </span>
+    </el-tooltip>
+    <el-tooltip content="导出" placement="bottom" :show-after="300">
+      <span @click="onExport">
+        <Icon icon="mdi:export"></Icon>
+      </span>
+    </el-tooltip>
 
     <input ref="inputRef" type="file" v-show="false" @change="onFileChange">
 
@@ -145,11 +163,41 @@ function showAiPanel() {
 
 <style scoped lang="scss">
 .toolbar-right {
+  align-items: center;
+
   span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
     padding: 4px;
-    border: 1px solid #3b465b;
-    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
     cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 180ms ease;
+
+    &:hover {
+      border-color: var(--border-color-light);
+      color: var(--text-primary);
+      background-color: var(--bg-hover);
+    }
+
+    &.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background-color: rgba(34, 211, 238, 0.12);
+    }
+
+    &.publish {
+      border-color: rgba(34, 211, 238, 0.5);
+      color: var(--accent);
+
+      &:hover {
+        background-color: rgba(34, 211, 238, 0.12);
+      }
+    }
   }
 }
 </style>

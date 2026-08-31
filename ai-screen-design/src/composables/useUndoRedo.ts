@@ -35,7 +35,8 @@ export function useUndoRedo() {
   }
 
   // 记录
-  function applyChange<T>(target: T, key: string, newValue: T) {
+  // target 是响应式对象，key 为取值路径（如 'layout'、'props.content'），newValue 为任意新值
+  function applyChange<T>(target: T, key: string, newValue: any) {
     // 改变之前
     const oldValue = getValue(target, key)
 

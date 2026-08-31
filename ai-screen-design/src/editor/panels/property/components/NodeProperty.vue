@@ -57,7 +57,7 @@ const jsonVisible = ref(false)
 const eventVisible = ref(false)
 const jsonText = ref('')
 
-const nodeEventRef = useTemplateRef<HTMLElement>('nodeEventRef')
+const nodeEventRef = useTemplateRef<InstanceType<typeof NodeEvents>>('nodeEventRef')
 
 function previewJson() {
   jsonText.value = JSON.stringify(selectedNode.value, null, 2)
@@ -84,20 +84,24 @@ function onConfirmEvent() {
 </script>
 
 <template>
-  <div class="node-property">
+  <div class="node-property h-full flex flex-col">
     <div class="node-title">
-      <span> {{ selectedNode.name }}</span>
+      <span class="node-name"> {{ selectedNode.name }}</span>
       <div class="flex gap-20">
-        <span class="cursor-pointer" @click="eventVisible = true">
-          <Icon icon="codicon:symbol-event"></Icon>
-        </span>
-        <span class="cursor-pointer" @click="previewJson">
-          <Icon icon="si:json-duotone"></Icon>
-        </span>
+        <el-tooltip content="事件配置" placement="bottom" :show-after="300">
+          <span class="cursor-pointer action-btn" @click="eventVisible = true">
+            <Icon icon="codicon:symbol-event"></Icon>
+          </span>
+        </el-tooltip>
+        <el-tooltip content="编辑 JSON" placement="bottom" :show-after="300">
+          <span class="cursor-pointer action-btn" @click="previewJson">
+            <Icon icon="si:json-duotone"></Icon>
+          </span>
+        </el-tooltip>
       </div>
     </div>
 
-    <el-tabs v-model="activeTab" stretch>
+    <el-tabs v-model="activeTab" stretch class="property-tabs flex-1 min-h-0">
       <el-tab-pane label="属性" name="property">
         <el-collapse v-model="active" accordion>
           <el-collapse-item title="布局属性" name="layout">
@@ -134,31 +138,79 @@ function onConfirmEvent() {
 
 <style scoped lang="scss">
 .node-property {
+  background: var(--bg-panel);
 
   .node-title {
-    height: 40px;
+    height: var(--panel-header-height);
+    flex: none;
     display: flex;
     align-items: center;
-    background-color: bg-mix(40);
+    background-color: var(--bg-elevated);
+    border-bottom: 1px solid var(--border-color);
     font-weight: 600;
-    padding: 0 20px;
+    padding: 0 12px;
     justify-content: space-between;
+
+    .node-name {
+      font-size: 13px;
+      color: var(--text-primary);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      transition: all 160ms ease;
+
+      &:hover {
+        color: var(--accent);
+        background-color: var(--bg-hover);
+      }
+    }
+  }
+
+  :deep(.property-tabs) {
+    min-height: 0;
+
+    .el-tabs__header {
+      margin: 0;
+      padding: 0 8px;
+    }
+
+    .el-tabs__nav-wrap::after {
+      background-color: var(--border-color);
+    }
+
+    .el-tabs__content {
+      overflow: auto;
+    }
   }
 
   :deep(.el-collapse) {
     --el-collapse-border-color: var(--border-color);
-    --el-collapse-header-height: 48px;
+    --el-collapse-header-height: 42px;
     --el-collapse-header-bg-color: transparent;
-    --el-collapse-header-text-color: var(--el-text-color-primary);
+    --el-collapse-header-text-color: var(--text-secondary);
     --el-collapse-header-font-size: 13px;
     --el-collapse-content-bg-color: transparent;
     --el-collapse-content-font-size: 13px;
-    --el-collapse-content-text-color: var(--el-text-color-primary);
+    --el-collapse-content-text-color: var(--text-primary);
     border-top: 1px solid var(--el-collapse-border-color);
     border-bottom: 1px solid var(--el-collapse-border-color);
 
     .el-collapse-item__header {
-      padding-left: 20px;
+      padding-left: 16px;
+
+      &:hover {
+        color: var(--text-primary);
+      }
     }
   }
 }
