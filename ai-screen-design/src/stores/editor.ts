@@ -3,6 +3,8 @@ import type { PageSchema } from '@/schema/page'
 import { defineStore } from 'pinia'
 import { useUndoRedo } from '@/composables/useUndoRedo'
 
+export type AlignType = 'left' | 'centerX' | 'right' | 'top' | 'centerY' | 'bottom' | 'distributeH' | 'distributeV'
+
 export const useEditorStore = defineStore('editor', () => {
   const { applyChange } = useUndoRedo()
 
@@ -162,6 +164,107 @@ export const useEditorStore = defineStore('editor', () => {
     setNodes(newNodes)
   }
 
+  /** ===== 剪贴板 ===== */
+  const clipboard = ref<MaterialSchema[]>([])
+
+  /** 复制选中的节点到剪贴板 */
+  function copySelected() {
+    const selected = nodes.value.filter((n) => selectedNodeIds.value.includes(n.id))
+    if (!selected.length) return
+    clipboard.value = JSON.parse(JSON.stringify(selected))
+  }
+
+  /** 从剪贴板粘贴（偏移 20px 防止重叠） */
+  function pasteClipboard() {
+    if (!clipboard.value.length) return
+    const pasted = clipboard.value.map((node) => {
+      const clone = JSON.parse(JSON.stringify(node))
+      clone.id = crypto.randomUUID()
+      clone.groupId = undefined
+      clone.layout = {
+        ...clone.layout,
+        x: clone.layout.x + 20,
+        y: clone.layout.y + 20,
+      }
+      return clone
+    })
+    setNodes([...nodes.value, ...pasted])
+    selectNodes(pasted.map((n) => n.id))
+  }
+
+  /** ===== 多选对齐与分布 ===== */
+  function alignNodes(type: AlignType) {
+    const selected = nodes.value.filter((n) => selectedNodeIds.value.includes(n.id))
+    if (selected.length < 2) return
+
+    const setLayout = (node: MaterialSchema, patch: { x?: number; y?: number; width?: number; height?: number }) => {
+      applyChange(node, 'layout', { ...node.layout, ...patch })
+    }
+
+    if (type === 'distributeH' || type === 'distributeV') {
+      const isH = type === 'distributeH'
+      const sorted = [...selected].sort((a, b) => (isH ? a.layout.x - b.layout.x : a.layout.y - b.layout.y))
+      const getStart = (n) => (isH ? n.layout.x : n.layout.y)
+      const getSize = (n) => (isH ? n.layout.width : n.layout.height)
+      const total = sorted.reduce((s, n) => s + getSize(n), 0)
+      const start = getStart(sorted[0])
+      const end = getStart(sorted[sorted.length - 1]) + getSize(sorted[sorted.length - 1])
+      const gap = (end - start - total) / (sorted.length - 1)
+      let cursor = start
+      sorted.forEach((n) => {
+        if (isH) setLayout(n, { x: cursor })
+        else setLayout(n, { y: cursor })
+        cursor += getSize(n) + gap
+      })
+      return
+    }
+
+    const rects = selected.map((n) => n.layout)
+    const left = Math.min(...rects.map((r) => r.x))
+    const right = Math.max(...rects.map((r) => r.x + r.width))
+    const top = Math.min(...rects.map((r) => r.y))
+    const bottom = Math.max(...rects.map((r) => r.y + r.height))
+    const centerX = (left + right) / 2
+    const centerY = (top + bottom) / 2
+
+    selected.forEach((n) => {
+      const { x, y, width, height } = n.layout
+      switch (type) {
+        case 'left':
+          setLayout(n, { x: left })
+          break
+        case 'centerX':
+          setLayout(n, { x: centerX - width / 2 })
+          break
+        case 'right':
+          setLayout(n, { x: right - width })
+          break
+        case 'top':
+          setLayout(n, { y: top })
+          break
+        case 'centerY':
+          setLayout(n, { y: centerY - height / 2 })
+          break
+        case 'bottom':
+          setLayout(n, { y: bottom - height })
+          break
+      }
+    })
+  }
+
+  /** ===== 组合 / 取消组合 ===== */
+  function groupSelected() {
+    const selected = nodes.value.filter((n) => selectedNodeIds.value.includes(n.id))
+    if (selected.length < 2) return
+    const groupId = crypto.randomUUID()
+    selected.forEach((n) => applyChange(n, 'groupId', groupId))
+  }
+
+  function ungroupSelected() {
+    const selected = nodes.value.filter((n) => selectedNodeIds.value.includes(n.id))
+    selected.forEach((n) => applyChange(n, 'groupId', undefined))
+  }
+
   return {
     panelVisible,
     nodes,
@@ -171,6 +274,7 @@ export const useEditorStore = defineStore('editor', () => {
     selectedNodeId,
     selectedNodeIds,
     selectedNode,
+    clipboard,
     addNode,
     selectNode,
     clearSelectedNode,
@@ -183,5 +287,10 @@ export const useEditorStore = defineStore('editor', () => {
     toggleLock,
     updateNode,
     setPage,
+    copySelected,
+    pasteClipboard,
+    alignNodes,
+    groupSelected,
+    ungroupSelected,
   }
 })

@@ -8,23 +8,54 @@ export const funnelMaterial: MaterialDefinition = {
   configSchema: createChartNodeSchema('funnel-chart'),
   setters: [
     {
+      group: '标题',
       type: 'input',
       label: '标题',
       key: 'props.option.title.text',
     },
     {
+      group: '标题',
       type: 'color',
       label: '标题色',
       key: 'props.option.title.textStyle.color',
     },
     {
+      group: '标题',
+      type: 'select',
+      label: '对齐',
+      key: 'props.option.title.left',
+      props: {
+        options: [
+          { label: '左对齐', value: 'left' },
+          { label: '居中', value: 'center' },
+          { label: '右对齐', value: 'right' },
+        ],
+      },
+    },
+    {
+      group: '标题',
+      type: 'number',
+      label: '标题字号',
+      key: 'props.option.title.textStyle.fontSize',
+      span: 12,
+    },
+    {
+      group: '图例',
       type: 'checkbox',
       label: '图例显示',
       key: 'props.option.legend.show',
     },
     {
+      group: '图例',
+      type: 'number',
+      label: '图例字号',
+      key: 'props.option.legend.textStyle.fontSize',
+      span: 12,
+    },
+    {
+      group: '系列',
       type: 'select',
-      label: '对齐',
+      label: '排序',
       key: 'props.option.series.0.sort',
       props: {
         options: [
@@ -34,9 +65,42 @@ export const funnelMaterial: MaterialDefinition = {
       },
     },
     {
+      group: '系列',
+      type: 'number',
+      label: '层间距',
+      key: 'props.option.series.0.gap',
+      span: 12,
+    },
+    {
+      group: '系列',
+      type: 'input',
+      label: '最小尺寸',
+      key: 'props.option.series.0.minSize',
+      span: 12,
+      props: {
+        placeholder: '如 20%',
+      },
+    },
+    {
+      group: '系列',
+      type: 'checkbox',
+      label: '标签显示',
+      key: 'props.option.series.0.label.show',
+      span: 12,
+    },
+    {
+      group: '系列',
       type: 'color',
       label: '系列颜色',
       key: 'props.option.color.0',
+      span: 12,
+    },
+    {
+      group: '系列',
+      type: 'color',
+      label: '描边颜色',
+      key: 'props.option.series.0.itemStyle.borderColor',
+      span: 12,
     },
   ],
   schema: {

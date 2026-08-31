@@ -8,21 +8,19 @@ export const radarMaterial: MaterialDefinition = {
   configSchema: createChartNodeSchema('radar-chart'),
   setters: [
     {
+      group: '标题',
       type: 'input',
       label: '标题',
       key: 'props.option.title.text',
     },
     {
+      group: '标题',
       type: 'color',
       label: '标题色',
       key: 'props.option.title.textStyle.color',
     },
     {
-      type: 'checkbox',
-      label: '图例显示',
-      key: 'props.option.legend.show',
-    },
-    {
+      group: '标题',
       type: 'select',
       label: '对齐',
       key: 'props.option.title.left',
@@ -35,14 +33,62 @@ export const radarMaterial: MaterialDefinition = {
       },
     },
     {
+      group: '标题',
+      type: 'number',
+      label: '标题字号',
+      key: 'props.option.title.textStyle.fontSize',
+      span: 12,
+    },
+    {
+      group: '图例',
+      type: 'checkbox',
+      label: '图例显示',
+      key: 'props.option.legend.show',
+    },
+    {
+      group: '图例',
+      type: 'number',
+      label: '图例字号',
+      key: 'props.option.legend.textStyle.fontSize',
+      span: 12,
+    },
+    {
+      group: '系列',
       type: 'color',
       label: '线条色',
       key: 'props.option.series.0.lineStyle.color',
     },
     {
+      group: '系列',
       type: 'color',
       label: '填充色',
       key: 'props.option.series.0.areaStyle.color',
+    },
+    {
+      group: '系列',
+      type: 'number',
+      label: '线宽',
+      key: 'props.option.series.0.lineStyle.width',
+      span: 12,
+    },
+    {
+      group: '系列',
+      type: 'number',
+      label: '符号大小',
+      key: 'props.option.series.0.symbolSize',
+      span: 12,
+    },
+    {
+      group: '雷达',
+      type: 'input',
+      label: '雷达半径',
+      key: 'props.option.radar.radius',
+    },
+    {
+      group: '雷达',
+      type: 'color',
+      label: '指标文字色',
+      key: 'props.option.radar.axisName.color',
     },
   ],
   schema: {

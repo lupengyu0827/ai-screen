@@ -20,9 +20,19 @@ export function useSelection({ stageRef, moveableRef }) {
     { deep: true, flush: 'post' },
   )
 
-  // 选中
+  // 选中（shift+点击切换多选）
   function onSelect(node: MaterialSchema, e: MouseEvent) {
-    editorStore.selectNode(node.id)
+    if (e.shiftKey) {
+      const ids = new Set(editorStore.selectedNodeIds)
+      if (ids.has(node.id)) {
+        ids.delete(node.id)
+      } else {
+        ids.add(node.id)
+      }
+      editorStore.selectNodes([...ids])
+    } else {
+      editorStore.selectNode(node.id)
+    }
 
     nextTick(() => {
       moveableRef.value.dragStart(e)

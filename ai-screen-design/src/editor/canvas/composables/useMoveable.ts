@@ -41,13 +41,22 @@ export function useMoveable(moveableRef) {
     e.target.style.top = e.top + 'px'
 
     const node = getNodeByTarget(e.target as HTMLElement)
-    // node.layout.x = e.left
-    // node.layout.y = e.top
+    if (!node) return
 
-    applyChange(node, 'layout', {
-      ...node.layout,
-      x: e.left,
-      y: e.top,
+    // 若节点属于组合，则同组节点整体偏移
+    const groupNodes = node.groupId
+      ? editorStore.nodes.filter((n) => n.groupId === node.groupId)
+      : [node]
+
+    const dx = e.left - node.layout.x
+    const dy = e.top - node.layout.y
+
+    groupNodes.forEach((n) => {
+      applyChange(n, 'layout', {
+        ...n.layout,
+        x: n.layout.x + dx,
+        y: n.layout.y + dy,
+      })
     })
   }
 

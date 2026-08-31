@@ -32,6 +32,8 @@ export interface MaterialSchema {
   props: Record<string, any>
   dataId?: string
   events?: MaterialEvent[]
+  // 组合标识：同 groupId 的节点作为一个整体移动
+  groupId?: string
 }
 
 export interface SettersSchema {
