@@ -2,85 +2,86 @@
 import type { MaterialDefinition } from '@/schema/material'
 import BorderBox from './BorderBox.vue'
 import Divider from './Divider.vue'
-import { BorderBoxSchema, DividerSchema } from './schema.js'
+import Decoration from './Decoration.vue'
+import { createBorderBoxSchema, DividerSchema, createDecorationSchema } from './schema.js'
 
-const borderBoxMaterial: MaterialDefinition = {
-  name: '边框装饰',
-  icon: 'fluent-color:border-20',
-  group: 'decorate',
-  configSchema: BorderBoxSchema,
-  setters: [
-    {
-      type: 'input',
-      label: '标题',
-      key: 'props.title',
-    },
-    {
-      type: 'color',
-      label: '边框颜色',
-      key: 'props.color',
-      span: 12,
-    },
-    {
-      type: 'color',
-      label: '标题颜色',
-      key: 'props.titleColor',
-      span: 12,
-    },
-    {
-      type: 'number',
-      label: '圆角',
-      key: 'props.radius',
-      span: 12,
-    },
-    {
-      type: 'number',
-      label: '背景透明度',
-      key: 'props.bgOpacity',
-      span: 12,
+/** 边框系列：款式 -> (名称, 图标, 默认宽高) */
+const BORDER_VARIANTS: Record<string, [string, string, number, number]> = {
+  '01': ['边框·科技直角', 'fluent-color:border-20', 320, 200],
+  '02': ['边框·渐变描边', 'fluent:border-all-24-regular', 320, 200],
+  '03': ['边框·圆弧四角', 'fluent:border-rounded-24-regular', 320, 200],
+  '04': ['边框·数字科技', 'fluent:border-top-thick-24-regular', 320, 200],
+  '05': ['边框·双层内嵌', 'fluent:border-inside-24-regular', 320, 200],
+  '06': ['边框·侧边流光', 'fluent:border-left-right-24-regular', 320, 200],
+  '07': ['边框·标题栏', 'fluent:border-top-bottom-24-regular', 360, 60],
+  '08': ['边框·星点', 'fluent:star-four-points-24-regular', 320, 200],
+}
+
+const borderMaterials: MaterialDefinition[] = Object.entries(BORDER_VARIANTS).map(([variant, meta]) => {
+  const [name, icon, width, height] = meta
+  const type = `border-box-${variant}`
+  return {
+    name,
+    icon,
+    group: 'decorate',
+    configSchema: createBorderBoxSchema(type),
+    setters: [
+      {
+        type: 'input',
+        label: '标题',
+        key: 'props.title',
+      },
+      {
+        type: 'color',
+        label: '边框颜色',
+        key: 'props.color',
+        span: 12,
+      },
+      {
+        type: 'color',
+        label: '标题颜色',
+        key: 'props.titleColor',
+        span: 12,
+      },
+      {
+        type: 'number',
+        label: '圆角',
+        key: 'props.radius',
+        span: 12,
+      },
+      {
+        type: 'number',
+        label: '背景透明度',
+        key: 'props.bgOpacity',
+        span: 12,
+        props: {
+          min: 0,
+          max: 1,
+          step: 0.05,
+        },
+      },
+    ],
+    eventOptions: [
+      { label: '点击', value: 'click' },
+      { label: '鼠标移入', value: 'mouseover' },
+      { label: '鼠标移出', value: 'mouseout' },
+      { label: '组件挂载时', value: 'vnodeMounted' },
+    ],
+    schema: {
+      type,
+      name,
+      layout: { x: 0, y: 0, width, height },
       props: {
-        min: 0,
-        max: 1,
-        step: 0.05,
+        title: name.replace('边框·', ''),
+        color: '#22d3ee',
+        titleColor: '#22d3ee',
+        radius: 6,
+        bgOpacity: 0.25,
+        variant,
       },
     },
-  ],
-  eventOptions: [
-    {
-      label: '点击',
-      value: 'click',
-    },
-    {
-      label: '鼠标移入',
-      value: 'mouseover',
-    },
-    {
-      label: '鼠标移出',
-      value: 'mouseout',
-    },
-    {
-      label: '组件挂载时',
-      value: 'vnodeMounted',
-    },
-  ],
-  schema: {
-    type: 'border-box',
-    name: '边框装饰',
-    layout: {
-      x: 0,
-      y: 0,
-      width: 320,
-      height: 200,
-    },
-    props: {
-      title: '标题',
-      color: '#22d3ee',
-      titleColor: '#22d3ee',
-      radius: 6,
-      bgOpacity: 0.25,
-    },
-  },
-}
+  }
+})
 
 const dividerMaterial: MaterialDefinition = {
   name: '分割线',
@@ -119,32 +120,15 @@ const dividerMaterial: MaterialDefinition = {
     },
   ],
   eventOptions: [
-    {
-      label: '点击',
-      value: 'click',
-    },
-    {
-      label: '鼠标移入',
-      value: 'mouseover',
-    },
-    {
-      label: '鼠标移出',
-      value: 'mouseout',
-    },
-    {
-      label: '组件挂载时',
-      value: 'vnodeMounted',
-    },
+    { label: '点击', value: 'click' },
+    { label: '鼠标移入', value: 'mouseover' },
+    { label: '鼠标移出', value: 'mouseout' },
+    { label: '组件挂载时', value: 'vnodeMounted' },
   ],
   schema: {
     type: 'divider',
     name: '分割线',
-    layout: {
-      x: 0,
-      y: 0,
-      width: 320,
-      height: 24,
-    },
+    layout: { x: 0, y: 0, width: 320, height: 24 },
     props: {
       title: '',
       titleColor: 'var(--text-secondary)',
@@ -155,7 +139,59 @@ const dividerMaterial: MaterialDefinition = {
   },
 }
 
+/** 动态装饰线系列 */
+const DECO_VARIANTS: Record<string, [string, string, number, number]> = {
+  'line-1': ['装饰线·流光', 'fluent:line-flow-24-regular', 320, 12],
+  'line-2': ['装饰线·双向', 'fluent:line-horizontal-3-20-regular', 320, 12],
+  dot: ['装饰线·点阵', 'fluent:circle-small-20-regular', 320, 12],
+}
+
+const decorationMaterials: MaterialDefinition[] = Object.entries(DECO_VARIANTS).map(([variant, meta]) => {
+  const [name, icon, width, height] = meta
+  const type = `decoration-${variant}`
+  return {
+    name,
+    icon,
+    group: 'decorate',
+    configSchema: createDecorationSchema(type),
+    setters: [
+      {
+        type: 'color',
+        label: '装饰颜色',
+        key: 'props.color',
+        span: 12,
+      },
+      {
+        type: 'number',
+        label: '动画周期',
+        key: 'props.duration',
+        span: 12,
+        props: {
+          min: 1,
+          max: 10,
+        },
+      },
+    ],
+    eventOptions: [
+      { label: '点击', value: 'click' },
+      { label: '鼠标移入', value: 'mouseover' },
+      { label: '鼠标移出', value: 'mouseout' },
+    ],
+    schema: {
+      type,
+      name,
+      layout: { x: 0, y: 0, width, height },
+      props: {
+        color: '#22d3ee',
+        variant,
+        duration: 3,
+      },
+    },
+  }
+})
+
 export function install(register) {
-  register(borderBoxMaterial, BorderBox)
+  borderMaterials.forEach((m) => register(m, BorderBox))
   register(dividerMaterial, Divider)
+  decorationMaterials.forEach((m) => register(m, Decoration))
 }

@@ -1,11 +1,11 @@
 import type { MaterialDefinition } from '@/schema/material.ts'
 import { createChartNodeSchema } from './schema.js'
 
-export const pieMaterial: MaterialDefinition = {
-  name: '饼图',
+export const roseMaterial: MaterialDefinition = {
+  name: '南丁格尔玫瑰图',
   group: 'charts',
-  icon: 'si:pie-chart-duotone',
-  configSchema: createChartNodeSchema('pie-chart'),
+  icon: 'si:pie-chart-alt-2',
+  configSchema: createChartNodeSchema('rose-chart'),
   setters: [
     {
       group: '标题',
@@ -57,6 +57,18 @@ export const pieMaterial: MaterialDefinition = {
       key: 'props.option.series.0.encode.value',
     },
     {
+      group: '系列',
+      type: 'select',
+      label: '玫瑰模式',
+      key: 'props.option.series.0.roseType',
+      props: {
+        options: [
+          { label: '半径玫瑰', value: 'radius' },
+          { label: '面积玫瑰', value: 'area' },
+        ],
+      },
+    },
+    {
       group: '标题',
       type: 'number',
       label: '标题字号',
@@ -77,7 +89,7 @@ export const pieMaterial: MaterialDefinition = {
       key: 'props.option.series.0.radius.0',
       span: 12,
       props: {
-        placeholder: '如 40%',
+        placeholder: '如 20%',
       },
     },
     {
@@ -87,7 +99,7 @@ export const pieMaterial: MaterialDefinition = {
       key: 'props.option.series.0.radius.1',
       span: 12,
       props: {
-        placeholder: '如 70%',
+        placeholder: '如 80%',
       },
     },
     {
@@ -97,22 +109,15 @@ export const pieMaterial: MaterialDefinition = {
       key: 'props.option.series.0.label.show',
       span: 12,
     },
-    {
-      group: '系列',
-      type: 'color',
-      label: '系列色2',
-      key: 'props.option.color.1',
-      span: 12,
-    },
   ],
   schema: {
-    type: 'pie-chart',
-    name: '饼图',
+    type: 'rose-chart',
+    name: '南丁格尔玫瑰图',
     layout: {
       x: 0,
       y: 0,
       width: 400,
-      height: 260,
+      height: 300,
     },
     props: {
       option: {
@@ -128,7 +133,7 @@ export const pieMaterial: MaterialDefinition = {
           },
         },
         title: {
-          text: '访问来源占比',
+          text: '销售渠道分析',
           top: 8,
           left: 'center',
           textStyle: {
@@ -141,20 +146,26 @@ export const pieMaterial: MaterialDefinition = {
         },
         dataset: {
           source: [
-            { channel: '搜索引擎', value: 1048 },
-            { channel: '直接访问', value: 735 },
-            { channel: '联盟广告', value: 484 },
-            { channel: '视频广告', value: 300 },
+            { channel: '线上商城', value: 1200 },
+            { channel: '实体门店', value: 900 },
+            { channel: '合作分销', value: 640 },
+            { channel: '直播带货', value: 480 },
+            { channel: '海外市场', value: 320 },
           ],
         },
         series: [
           {
-            name: '访问来源',
+            name: '渠道',
             type: 'pie',
+            roseType: 'radius',
+            radius: ['20%', '80%'],
             center: ['50%', '62%'],
-            avoidLabelOverlap: true,
+            itemStyle: {
+              borderRadius: 4,
+            },
             label: {
               color: '#e2e8f0',
+              show: false,
             },
             labelLine: {
               lineStyle: {
@@ -171,21 +182,9 @@ export const pieMaterial: MaterialDefinition = {
     },
   },
   eventOptions: [
-    {
-      label: '点击',
-      value: 'click',
-    },
-    {
-      label: '鼠标移入',
-      value: 'mouseover',
-    },
-    {
-      label: '鼠标移出',
-      value: 'mouseout',
-    },
-    {
-      label: '组件挂载时',
-      value: 'vnodeMounted',
-    },
+    { label: '点击', value: 'click' },
+    { label: '鼠标移入', value: 'mouseover' },
+    { label: '鼠标移出', value: 'mouseout' },
+    { label: '组件挂载时', value: 'vnodeMounted' },
   ],
 }

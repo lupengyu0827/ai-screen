@@ -9,12 +9,16 @@ import { radarMaterial } from './radar'
 import { gaugeMaterial } from './gauge'
 import { scatterMaterial } from './scatter'
 import { funnelMaterial } from './funnel'
+import { ringMaterial } from './ring'
+import { roseMaterial } from './rose'
 
 const chartsMaterials = [
   barMaterial,
   areaMaterial,
   lineMaterial,
   pieMaterial,
+  ringMaterial,
+  roseMaterial,
   radarMaterial,
   gaugeMaterial,
   scatterMaterial,

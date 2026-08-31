@@ -67,3 +67,28 @@ export const RingProgressSchema = NodeBaseSchema.extend({
     })
     .describe('环形进度的业务属性'),
 })
+
+export const CarouselTableSchema = NodeBaseSchema.extend({
+  type: z.literal('carousel-table').describe('轮播表格物料类型'),
+  props: z
+    .object({
+      title: z.string().describe('表格标题，留空则不显示'),
+      columns: z
+        .array(
+          z.object({
+            label: z.string().describe('列标题'),
+            key: z.string().describe('列数据字段名'),
+            width: z.number().optional().describe('列宽百分比，默认 50'),
+          }),
+        )
+        .describe('表格列配置'),
+      data: z.array(z.record(z.string(), z.any())).describe('表格数据，未绑定数据源时展示'),
+      rowHeight: z.number().describe('每行高度，单位为像素'),
+      showHeader: z.boolean().describe('是否显示表头'),
+      headerBg: z.string().describe('表头背景色'),
+      rowBg: z.string().describe('偶数行背景色'),
+      textColor: z.string().describe('行文字颜色'),
+      interval: z.number().describe('每行滚动间隔，单位为秒'),
+    })
+    .describe('轮播表格的业务属性'),
+})

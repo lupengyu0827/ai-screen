@@ -1,11 +1,11 @@
 import type { MaterialDefinition } from '@/schema/material.ts'
 import { createChartNodeSchema } from './schema.js'
 
-export const pieMaterial: MaterialDefinition = {
-  name: '饼图',
+export const ringMaterial: MaterialDefinition = {
+  name: '环形图',
   group: 'charts',
-  icon: 'si:pie-chart-duotone',
-  configSchema: createChartNodeSchema('pie-chart'),
+  icon: 'si:donut-chart-duotone',
+  configSchema: createChartNodeSchema('ring-chart'),
   setters: [
     {
       group: '标题',
@@ -77,7 +77,7 @@ export const pieMaterial: MaterialDefinition = {
       key: 'props.option.series.0.radius.0',
       span: 12,
       props: {
-        placeholder: '如 40%',
+        placeholder: '如 45%',
       },
     },
     {
@@ -106,12 +106,12 @@ export const pieMaterial: MaterialDefinition = {
     },
   ],
   schema: {
-    type: 'pie-chart',
-    name: '饼图',
+    type: 'ring-chart',
+    name: '环形图',
     layout: {
       x: 0,
       y: 0,
-      width: 400,
+      width: 360,
       height: 260,
     },
     props: {
@@ -128,7 +128,7 @@ export const pieMaterial: MaterialDefinition = {
           },
         },
         title: {
-          text: '访问来源占比',
+          text: '环形占比',
           top: 8,
           left: 'center',
           textStyle: {
@@ -149,12 +149,14 @@ export const pieMaterial: MaterialDefinition = {
         },
         series: [
           {
-            name: '访问来源',
+            name: '占比',
             type: 'pie',
+            radius: ['45%', '70%'],
             center: ['50%', '62%'],
             avoidLabelOverlap: true,
             label: {
               color: '#e2e8f0',
+              show: false,
             },
             labelLine: {
               lineStyle: {
@@ -171,21 +173,9 @@ export const pieMaterial: MaterialDefinition = {
     },
   },
   eventOptions: [
-    {
-      label: '点击',
-      value: 'click',
-    },
-    {
-      label: '鼠标移入',
-      value: 'mouseover',
-    },
-    {
-      label: '鼠标移出',
-      value: 'mouseout',
-    },
-    {
-      label: '组件挂载时',
-      value: 'vnodeMounted',
-    },
+    { label: '点击', value: 'click' },
+    { label: '鼠标移入', value: 'mouseover' },
+    { label: '鼠标移出', value: 'mouseout' },
+    { label: '组件挂载时', value: 'vnodeMounted' },
   ],
 }

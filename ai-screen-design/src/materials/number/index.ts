@@ -4,7 +4,8 @@ import Flop from './Flop.vue'
 import Progress from './Progress.vue'
 import RankList from './RankList.vue'
 import RingProgress from './RingProgress.vue'
-import { FlopSchema, ProgressSchema, RankListSchema, RingProgressSchema } from './schema.js'
+import CarouselTable from './CarouselTable.vue'
+import { FlopSchema, ProgressSchema, RankListSchema, RingProgressSchema, CarouselTableSchema } from './schema.js'
 
 const numberFlopMaterial: MaterialDefinition = {
   name: '数字翻牌器',
@@ -332,9 +333,129 @@ const ringProgressMaterial: MaterialDefinition = {
   },
 }
 
+const carouselTableMaterial: MaterialDefinition = {
+  name: '轮播表格',
+  icon: 'fluent-color:table-20',
+  group: 'number',
+  configSchema: CarouselTableSchema,
+  setters: [
+    {
+      type: 'input',
+      label: '标题',
+      key: 'props.title',
+    },
+    {
+      type: 'input',
+      label: '列1名称',
+      key: 'props.columns.0.label',
+      span: 12,
+    },
+    {
+      type: 'input',
+      label: '列1字段',
+      key: 'props.columns.0.key',
+      span: 12,
+    },
+    {
+      type: 'input',
+      label: '列2名称',
+      key: 'props.columns.1.label',
+      span: 12,
+    },
+    {
+      type: 'input',
+      label: '列2字段',
+      key: 'props.columns.1.key',
+      span: 12,
+    },
+    {
+      type: 'number',
+      label: '行高',
+      key: 'props.rowHeight',
+      span: 12,
+      props: {
+        min: 20,
+      },
+    },
+    {
+      type: 'number',
+      label: '滚动间隔',
+      key: 'props.interval',
+      span: 12,
+      props: {
+        min: 1,
+        step: 0.5,
+      },
+    },
+    {
+      type: 'checkbox',
+      label: '显示表头',
+      key: 'props.showHeader',
+      span: 12,
+    },
+    {
+      type: 'color',
+      label: '文字颜色',
+      key: 'props.textColor',
+      span: 12,
+    },
+    {
+      type: 'color',
+      label: '表头背景',
+      key: 'props.headerBg',
+      span: 12,
+    },
+    {
+      type: 'color',
+      label: '行背景',
+      key: 'props.rowBg',
+      span: 12,
+    },
+  ],
+  eventOptions: [
+    { label: '点击', value: 'click' },
+    { label: '鼠标移入', value: 'mouseover' },
+    { label: '鼠标移出', value: 'mouseout' },
+    { label: '组件挂载时', value: 'vnodeMounted' },
+  ],
+  schema: {
+    type: 'carousel-table',
+    name: '轮播表格',
+    layout: {
+      x: 0,
+      y: 0,
+      width: 360,
+      height: 200,
+    },
+    props: {
+      title: '',
+      columns: [
+        { label: '名称', key: 'name', width: 50 },
+        { label: '数值', key: 'value', width: 50 },
+      ],
+      data: [
+        { name: '搜索服务', value: 9821 },
+        { name: '推荐服务', value: 8754 },
+        { name: '消息服务', value: 7632 },
+        { name: '存储服务', value: 6540 },
+        { name: '计算服务', value: 5321 },
+        { name: '网关服务', value: 4287 },
+        { name: '日志服务', value: 3176 },
+      ],
+      rowHeight: 28,
+      showHeader: true,
+      headerBg: 'rgba(35, 46, 80, 0.6)',
+      rowBg: 'rgba(15, 23, 42, 0.4)',
+      textColor: '#e2e8f0',
+      interval: 2,
+    },
+  },
+}
+
 export function install(register) {
   register(numberFlopMaterial, Flop)
   register(progressMaterial, Progress)
   register(rankListMaterial, RankList)
   register(ringProgressMaterial, RingProgress)
+  register(carouselTableMaterial, CarouselTable)
 }

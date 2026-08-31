@@ -105,6 +105,8 @@ export function createChartNodeSchema(
     | 'line-chart'
     | 'area-chart'
     | 'pie-chart'
+    | 'ring-chart'
+    | 'rose-chart'
     | 'radar-chart'
     | 'gauge-chart'
     | 'scatter-chart'
