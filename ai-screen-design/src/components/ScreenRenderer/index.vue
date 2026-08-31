@@ -5,6 +5,8 @@ import type { PageSchema } from '@/schema/page'
 import { getMaterialComponent } from '@/materials/index'
 import { createRuntimeContext } from '@/runtime/context';
 import { runSandbox } from '@/runtime/sandbox';
+import { mapCanvasBg } from '@/composables/useTheme';
+import { buildNodeOuterStyle, buildNodeInnerStyle } from '@/utils/nodeStyle';
 
 defineComponent({
   name: 'ScreenRenderer',
@@ -38,7 +40,8 @@ const canvasStyle = computed(() => {
   return {
     width: `${canvas.value.width}px`,
     height: `${canvas.value.height}px`,
-    backgroundColor: canvas.value.backgroundColor,
+    // 默认背景跟随主题
+    backgroundColor: mapCanvasBg(canvas.value.backgroundColor),
     transform: `translate(${left.value}px, ${top.value}px) scale(${scale.value})`,
     transformOrigin: 'top left',
   }
@@ -48,13 +51,11 @@ const canvasStyle = computed(() => {
  * 移动修改css属性
  */
 function getNodeStyle(node: MaterialSchema, index: number) {
-  return {
-    width: node.layout.width + 'px',
-    height: node.layout.height + 'px',
-    left: node.layout.x + 'px',
-    top: node.layout.y + 'px',
-    zIndex: index + 1,
-  }
+  return buildNodeOuterStyle(node, index)
+}
+
+function getNodeInnerStyle(node: MaterialSchema) {
+  return buildNodeInnerStyle(node)
 }
 
 function init() {
@@ -125,8 +126,10 @@ onMounted(() => {
   <div class="preview-container">
     <div class="canvas-root" :style="canvasStyle">
       <div class="canvas-node" v-for="(node, index) in nodes" :key="node.id" :style="getNodeStyle(node, index)">
-        <component :ref="node.id" :is="getMaterialComponent(node.type)" :schema="node" :index="index"
-          v-on="createEvents(node)" />
+        <div class="canvas-node-inner h-full w-full" :style="getNodeInnerStyle(node)">
+          <component :ref="node.id" :is="getMaterialComponent(node.type)" :schema="node" :index="index"
+            v-on="createEvents(node)" />
+        </div>
       </div>
     </div>
   </div>

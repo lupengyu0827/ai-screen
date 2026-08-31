@@ -116,3 +116,34 @@
   --accent-rgb: 52, 211, 153;
   --accent-secondary: #22d3ee;
 }
+
+/* ===== 主题：浅色（light） ===== */
+[data-theme='light'] {
+  --background-color: #e8edf5;
+  --border-color: #d6dde8;
+
+  --bg-base: #f2f5fa;
+  --bg-panel: #ffffff;
+  --bg-elevated: #f8fafd;
+  --bg-hover: #eef2f8;
+  --bg-active: #0891b2;
+  --bg-overlay: rgba(242, 245, 250, 0.72);
+
+  --border-color-light: #e6ebf2;
+  --border-color-active: #0891b2;
+
+  --text-primary: #1e293b;
+  --text-secondary: #5b6b81;
+  --text-muted: #93a2b5;
+
+  --accent: #0891b2;
+  --accent-rgb: 8, 145, 178;
+  --accent-secondary: #6366f1;
+
+  --success: #0d9488;
+  --warning: #d97706;
+  --danger: #e11d48;
+
+  --shadow-panel: 0 4px 16px rgba(30, 41, 59, 0.12);
+  --shadow-card: 0 2px 8px rgba(30, 41, 59, 0.08);
+}

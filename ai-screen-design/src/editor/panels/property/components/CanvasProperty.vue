@@ -9,6 +9,24 @@ defineComponent({
 const editorStore = useEditorStore()
 
 const { canvas } = storeToRefs(editorStore)
+
+// 背景色：默认 var(--bg-base) 跟随主题，显示时解析为实际色值；用户修改后写回具体色值
+const bgColor = computed({
+  get: () => {
+    const c = canvas.value.backgroundColor
+    if (c === 'var(--bg-base)') {
+      return (
+        getComputedStyle(document.documentElement)
+          .getPropertyValue('--bg-base')
+          .trim() || '#0d121b'
+      )
+    }
+    return c
+  },
+  set: (val: string) => {
+    canvas.value.backgroundColor = val
+  },
+})
 </script>
 
 <template>
@@ -22,7 +40,7 @@ const { canvas } = storeToRefs(editorStore)
         <el-input-number v-model="canvas.height" :min="100" :max="4320"></el-input-number>
       </el-form-item>
       <el-form-item label="背景色">
-        <el-color-picker v-model="canvas.backgroundColor"></el-color-picker>
+        <el-color-picker v-model="bgColor"></el-color-picker>
       </el-form-item>
     </el-form>
   </div>

@@ -65,3 +65,32 @@ html.dark {
   scrollbar-color: #446b6b transparent;
   scrollbar-width: thin;
 }
+
+/* ===== Element Plus 浅色主题：跟随 --accent，浅色背景下使用明亮变量 ===== */
+[data-theme='light'] {
+  --el-color-primary: var(--accent);
+  --el-color-primary-light-3: color-mix(in srgb, var(--accent) 60%, white);
+  --el-color-primary-light-5: color-mix(in srgb, var(--accent) 40%, white);
+  --el-color-primary-light-7: color-mix(in srgb, var(--accent) 25%, white);
+  --el-color-primary-light-8: color-mix(in srgb, var(--accent) 20%, white);
+  --el-color-primary-light-9: color-mix(in srgb, var(--accent) 10%, white);
+  --el-color-primary-dark-2: color-mix(in srgb, var(--accent) 80%, black);
+
+  --el-bg-color: var(--bg-panel);
+  --el-bg-color-page: var(--bg-base);
+  --el-bg-color-overlay: var(--bg-panel);
+
+  --el-border-color: var(--border-color);
+  --el-border-color-light: var(--border-color-light);
+  --el-border-color-lighter: color-mix(in srgb, var(--bg-panel) 80%, #d8dee8);
+
+  --el-text-color-primary: var(--text-primary);
+  --el-text-color-regular: var(--text-secondary);
+  --el-text-color-secondary: var(--text-secondary);
+  --el-text-color-placeholder: var(--text-muted);
+
+  --el-fill-color-blank: var(--bg-panel);
+  --el-fill-color-light: var(--bg-hover);
+  --el-fill-color: var(--border-color);
+  --el-mask-color: rgba(242, 245, 250, 0.72);
+}

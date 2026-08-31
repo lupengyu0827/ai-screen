@@ -4,14 +4,13 @@ import type { MaterialSchema } from '@/schema/material'
 import { init, type EChartsType } from 'echarts'
 
 import { useDataSource } from '@/composables/useDataSource'
+import { applyOptionTheme, useReactiveTheme } from '@/composables/useTheme'
 
 defineOptions({
   name: 'ChartMaterial',
 })
 
 const props = defineProps<{ schema: MaterialSchema }>()
-
-
 
 /**
  * 物料状态来源
@@ -27,8 +26,11 @@ const dataId = computed(() => props.schema.dataId)
 
 const { data, loading, refresh } = useDataSource(dataId)
 
+const themeKey = useReactiveTheme()
+
 const option = computed(() => {
-  const _option = props.schema.props.option || {}
+  // 主题色替换（canvas 不支持 CSS 变量，此处把默认青色替换为当前主题色）
+  const _option = applyOptionTheme(props.schema.props.option || {}, themeKey.value) || {}
 
   // 仅当图表配置了 dataset 时才重写数据源（雷达图/仪表盘等无 dataset 的图表保持原样）
   const hasDataset = !!(_option.dataset && _option.dataset.source)

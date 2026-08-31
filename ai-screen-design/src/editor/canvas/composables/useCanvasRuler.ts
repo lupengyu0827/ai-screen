@@ -2,6 +2,7 @@ import { useEditorStore } from '@/stores/editor'
 import { storeToRefs } from 'pinia'
 
 import { debounce } from '@/utils/index'
+import { useReactiveTheme, mapCanvasBg } from '@/composables/useTheme'
 
 export function useCanvasRuler({ moveableRef, canvasRootRef }) {
   const editorStore = useEditorStore()
@@ -15,7 +16,8 @@ export function useCanvasRuler({ moveableRef, canvasRootRef }) {
     return {
       width: canvasWidth.value + 'px',
       height: canvasHeight.value + 'px',
-      backgroundColor: canvas.value.backgroundColor,
+      // 默认背景跟随主题
+      backgroundColor: mapCanvasBg(canvas.value.backgroundColor),
     }
   })
 
@@ -24,19 +26,28 @@ export function useCanvasRuler({ moveableRef, canvasRootRef }) {
   const rectHeight = ref(1000)
   const scale = ref(1)
 
-  const palette = {
-    bgColor: '#1f2937',
-    longfgColor: '#6b7280',
-    fontColor: '#9ca3af',
-    fontShadowColor: '#0e8da7',
-    shadowColor: 'rgba(14, 141, 167, 0.14)',
-    lineColor: '#22c55e',
-    lineType: 'solid',
-    lockLineColor: '#4b5563',
-    borderColor: '#374151',
-    hoverBg: '#111827',
-    hoverColor: '#ffffff',
-  }
+  // 刻度尺配色跟随主题
+  const themeKey = useReactiveTheme()
+  const palette = computed(() => {
+    void themeKey.value
+    const css = getComputedStyle(document.documentElement)
+    const accent = css.getPropertyValue('--accent').trim() || '#22d3ee'
+    const accentRgb = css.getPropertyValue('--accent-rgb').trim() || '34, 211, 238'
+    const border = css.getPropertyValue('--border-color').trim() || '#334151'
+    return {
+      bgColor: css.getPropertyValue('--bg-elevated').trim() || '#232e50',
+      longfgColor: border,
+      fontColor: css.getPropertyValue('--text-muted').trim() || '#64748b',
+      fontShadowColor: accent,
+      shadowColor: `rgba(${accentRgb}, 0.14)`,
+      lineColor: css.getPropertyValue('--success').trim() || '#22c55e',
+      lineType: 'solid',
+      lockLineColor: css.getPropertyValue('--border-color-light').trim() || '#4b5563',
+      borderColor: border,
+      hoverBg: css.getPropertyValue('--bg-hover').trim() || '#111827',
+      hoverColor: css.getPropertyValue('--text-primary').trim() || '#ffffff',
+    }
+  })
 
   const onRootResize = debounce((rect) => {
     rectWidth.value = rect.width
