@@ -4,7 +4,7 @@ import { createChartNodeSchema } from './schema.js'
 export const lineMaterial: MaterialDefinition = {
   name: '折线图',
   group: 'charts',
-  icon: 'fluent-color:list-bar-16',
+  icon: 'si:line-chart-duotone',
   configSchema: createChartNodeSchema('line-chart'),
   setters: [
     {

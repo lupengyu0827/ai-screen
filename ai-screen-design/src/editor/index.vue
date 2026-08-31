@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 
 import ToolbarLeft from '@/editor/toolbar/ToolbarLeft.vue'
 import ToolbarRight from '@/editor/toolbar/ToolbarRight.vue'
+import ThemeSwitch from '@/editor/toolbar/ThemeSwitch.vue'
 import MaterialPanel from '@/editor/panels/material/index.vue'
 import LayerPanel from '@/editor/panels/layer/index.vue'
 import CanvasRoot from '@/editor/canvas/index.vue'
@@ -46,6 +47,9 @@ const aiWidth = computed(() => (editorStore.panelVisible.ai ? '460px' : 0))
         <span class="brand-name">AI 大屏设计器</span>
         <span class="brand-divider"></span>
         <span class="brand-slogan">智能驱动 · 可视化搭建</span>
+      </div>
+      <div class="flex items-center gap-8 pr-4">
+        <ThemeSwitch />
       </div>
       <ToolbarRight />
     </header>
@@ -90,7 +94,7 @@ const aiWidth = computed(() => (editorStore.panelVisible.ai ? '460px' : 0))
         height: 20px;
         border-radius: 5px;
         background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-        box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
       }
 
       .brand-name {

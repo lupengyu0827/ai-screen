@@ -11,7 +11,11 @@ import 'element-plus/dist/index.css'
 
 import '@/mock/data.ts'
 
+import { applyTheme, getInitialTheme } from '@/composables/useTheme'
+
 const app = createApp(App)
+
+applyTheme(getInitialTheme())
 
 app.use(createPinia())
 app.use(router)

@@ -106,7 +106,9 @@ export function createChartNodeSchema(
     | 'area-chart'
     | 'pie-chart'
     | 'radar-chart'
-    | 'gauge-chart',
+    | 'gauge-chart'
+    | 'scatter-chart'
+    | 'funnel-chart',
 ) {
   return NodeBaseSchema.extend({
     type: z.literal(type).describe('图表物料的注册类型'),

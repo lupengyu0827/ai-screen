@@ -20,7 +20,7 @@ const barStyle = computed(() => ({
   width: percent.value + '%',
   background:
     props.schema.props.color ||
-    'linear-gradient(90deg, rgba(34, 211, 238, 0.4), #22d3ee)',
+    'linear-gradient(90deg, rgba(var(--accent-rgb), 0.4), var(--accent))',
 }))
 
 defineExpose({ refresh })

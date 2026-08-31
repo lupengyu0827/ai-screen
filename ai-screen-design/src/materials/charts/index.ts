@@ -7,6 +7,8 @@ import { lineMaterial } from './line'
 import { pieMaterial } from './pie'
 import { radarMaterial } from './radar'
 import { gaugeMaterial } from './gauge'
+import { scatterMaterial } from './scatter'
+import { funnelMaterial } from './funnel'
 
 const chartsMaterials = [
   barMaterial,
@@ -15,6 +17,8 @@ const chartsMaterials = [
   pieMaterial,
   radarMaterial,
   gaugeMaterial,
+  scatterMaterial,
+  funnelMaterial,
 ]
 
 export function install(register) {

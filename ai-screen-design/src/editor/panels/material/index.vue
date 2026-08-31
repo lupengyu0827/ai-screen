@@ -64,7 +64,7 @@ const currentGroupMaterials = computed(() => {
 
       &.active {
         color: var(--accent);
-        background: linear-gradient(90deg, rgba(34, 211, 238, 0.16), transparent);
+        background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.16), transparent);
         border-left: 2px solid var(--accent);
       }
     }

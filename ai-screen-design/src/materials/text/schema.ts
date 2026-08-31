@@ -47,3 +47,33 @@ export const TimeSchema = NodeBaseSchema.extend({
     })
     .describe('时间的业务属性'),
 })
+
+export const ButtonSchema = NodeBaseSchema.extend({
+  type: z.literal('button').describe('按钮物料类型'),
+  style: z
+    .object({
+      fontSize: z.number().describe('按钮文字字号，单位为像素'),
+    })
+    .partial()
+    .describe('按钮样式'),
+  props: z
+    .object({
+      text: z.string().describe('按钮展示文字'),
+      type: z
+        .enum(['primary', 'success', 'warning', 'danger', 'default'])
+        .describe('按钮主题：primary 主色 / success 成功 / warning 警告 / danger 危险 / default 中性'),
+      borderRadius: z.number().describe('按钮圆角，单位为像素'),
+    })
+    .describe('按钮的业务属性'),
+})
+
+export const IconSchema = NodeBaseSchema.extend({
+  type: z.literal('icon').describe('图标物料类型'),
+  props: z
+    .object({
+      icon: z.string().describe('iconify 图标名称，例如 mdi:star-four-points'),
+      size: z.number().describe('图标尺寸，单位为像素'),
+      color: z.string().describe('图标颜色，支持 CSS 颜色值'),
+    })
+    .describe('图标的业务属性'),
+})

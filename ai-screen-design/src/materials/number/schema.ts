@@ -50,3 +50,20 @@ export const RankListSchema = NodeBaseSchema.extend({
     })
     .describe('排行榜的业务属性'),
 })
+
+export const RingProgressSchema = NodeBaseSchema.extend({
+  type: z.literal('ring-progress').describe('环形进度物料类型'),
+  style: z.record(z.string(), z.any()).optional().describe('环形进度样式'),
+  props: z
+    .object({
+      value: z.number().describe('当前进度值，未绑定数据源时展示'),
+      max: z.number().describe('进度最大值'),
+      decimals: z.number().describe('百分比保留的小数位数'),
+      showText: z.boolean().describe('是否展示中心百分比文字'),
+      strokeWidth: z.number().describe('圆环宽度，相对 viewBox 200 的百分比'),
+      color: z.string().describe('进度环颜色'),
+      trackColor: z.string().describe('轨道颜色'),
+      textColor: z.string().describe('中心文字颜色'),
+    })
+    .describe('环形进度的业务属性'),
+})

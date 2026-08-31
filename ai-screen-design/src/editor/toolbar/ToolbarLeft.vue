@@ -69,7 +69,7 @@ const { undo, redo, canUndo, canRedo } = useUndoRedo()
     &.active {
       border-color: var(--accent);
       color: var(--accent);
-      background-color: rgba(34, 211, 238, 0.12);
+      background-color: rgba(var(--accent-rgb), 0.12);
     }
 
     &.disabled {

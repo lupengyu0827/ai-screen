@@ -71,6 +71,6 @@ defineExpose({ refresh })
 }
 
 .value {
-  text-shadow: 0 0 12px rgba(34, 211, 238, 0.35);
+  text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.35);
 }
 </style>

@@ -4,7 +4,7 @@ import { createChartNodeSchema } from './schema.js'
 export const areaMaterial: MaterialDefinition = {
   name: '面积图',
   group: 'charts',
-  icon: 'fluent-color:list-bar-16',
+  icon: 'material-symbols:area-chart',
   configSchema: createChartNodeSchema('area-chart'),
   setters: [
     {

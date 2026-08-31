@@ -187,15 +187,15 @@ function showAiPanel() {
     &.active {
       border-color: var(--accent);
       color: var(--accent);
-      background-color: rgba(34, 211, 238, 0.12);
+      background-color: rgba(var(--accent-rgb), 0.12);
     }
 
     &.publish {
-      border-color: rgba(34, 211, 238, 0.5);
+      border-color: rgba(var(--accent-rgb), 0.5);
       color: var(--accent);
 
       &:hover {
-        background-color: rgba(34, 211, 238, 0.12);
+        background-color: rgba(var(--accent-rgb), 0.12);
       }
     }
   }

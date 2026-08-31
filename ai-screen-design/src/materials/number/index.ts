@@ -3,7 +3,8 @@ import type { MaterialDefinition } from '@/schema/material'
 import Flop from './Flop.vue'
 import Progress from './Progress.vue'
 import RankList from './RankList.vue'
-import { FlopSchema, ProgressSchema, RankListSchema } from './schema.js'
+import RingProgress from './RingProgress.vue'
+import { FlopSchema, ProgressSchema, RankListSchema, RingProgressSchema } from './schema.js'
 
 const numberFlopMaterial: MaterialDefinition = {
   name: '数字翻牌器',
@@ -160,7 +161,7 @@ const progressMaterial: MaterialDefinition = {
       max: 100,
       showText: true,
       strokeWidth: 10,
-      color: 'linear-gradient(90deg, rgba(34, 211, 238, 0.4), #22d3ee)',
+      color: 'linear-gradient(90deg, rgba(var(--accent-rgb), 0.4), var(--accent))',
     },
   },
 }
@@ -237,8 +238,103 @@ const rankListMaterial: MaterialDefinition = {
   },
 }
 
+const ringProgressMaterial: MaterialDefinition = {
+  name: '环形进度',
+  icon: 'lets-icons:progress-duotone',
+  group: 'number',
+  configSchema: RingProgressSchema,
+  setters: [
+    {
+      type: 'number',
+      label: '进度值',
+      key: 'props.value',
+    },
+    {
+      type: 'number',
+      label: '最大值',
+      key: 'props.max',
+      span: 12,
+    },
+    {
+      type: 'number',
+      label: '小数位',
+      key: 'props.decimals',
+      span: 12,
+    },
+    {
+      type: 'checkbox',
+      label: '显示文字',
+      key: 'props.showText',
+      span: 12,
+    },
+    {
+      type: 'number',
+      label: '环宽',
+      key: 'props.strokeWidth',
+      span: 12,
+    },
+    {
+      type: 'color',
+      label: '进度色',
+      key: 'props.color',
+      span: 12,
+    },
+    {
+      type: 'color',
+      label: '轨道色',
+      key: 'props.trackColor',
+      span: 12,
+    },
+    {
+      type: 'color',
+      label: '文字色',
+      key: 'props.textColor',
+      span: 12,
+    },
+  ],
+  eventOptions: [
+    {
+      label: '点击',
+      value: 'click',
+    },
+    {
+      label: '鼠标移入',
+      value: 'mouseover',
+    },
+    {
+      label: '鼠标移出',
+      value: 'mouseout',
+    },
+    {
+      label: '组件挂载时',
+      value: 'vnodeMounted',
+    },
+  ],
+  schema: {
+    type: 'ring-progress',
+    name: '环形进度',
+    layout: {
+      x: 0,
+      y: 0,
+      width: 200,
+      height: 200,
+    },
+    props: {
+      value: 72,
+      max: 100,
+      decimals: 0,
+      showText: true,
+      strokeWidth: 12,
+      color: 'var(--accent)',
+      trackColor: 'rgba(var(--accent-rgb), 0.12)',
+      textColor: 'var(--text-primary)',
+    },
+  },
+}
+
 export function install(register) {
   register(numberFlopMaterial, Flop)
   register(progressMaterial, Progress)
   register(rankListMaterial, RankList)
+  register(ringProgressMaterial, RingProgress)
 }
