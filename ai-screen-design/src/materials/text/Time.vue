@@ -44,7 +44,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    class="flex w-full h-full items-center justify-center num-font"
+    class="flex w-full h-full items-center justify-center num-font whitespace-nowrap overflow-hidden"
     :style="{ color: schema.style?.color, fontSize: (schema.style?.fontSize || 20) + 'px' }"
   >
     {{ text }}

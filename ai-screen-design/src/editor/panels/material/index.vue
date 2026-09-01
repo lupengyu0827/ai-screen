@@ -9,6 +9,9 @@ const activeGroup = ref('charts')
 
 const groups = getMaterialGroups()
 
+// 物料预览环境：提供空数据源注入，图表组件可正常渲染默认数据预览
+provide('dataSources', ref([]))
+
 const currentGroupMaterials = computed(() => {
   return getMaterialsByGroup(activeGroup.value)
 })

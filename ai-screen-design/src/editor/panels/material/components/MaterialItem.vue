@@ -7,9 +7,8 @@ defineComponent({
 
 const props = defineProps(['material'])
 
-/** 该物料对应的渲染组件（图表类走 icon 预览，其余渲染真实迷你预览） */
+/** 该物料对应的渲染组件（统一渲染真实迷你预览，所见即所得） */
 const comp = computed(() => getMaterialComponent(props.material.schema.type))
-const isChart = computed(() => props.material.group === 'charts')
 
 /** 预览区按物料原始宽高比保持比例，避免变形 */
 const ratio = computed(() => {
@@ -29,10 +28,8 @@ function onStart(e: DragEvent) {
     <div class="title">{{ material.name }}</div>
     <div class="preview" :style="{ paddingBottom: (ratio * 100).toFixed(1) + '%' }">
       <div class="preview-inner">
-        <!-- 非图表：渲染真实迷你预览，所见即所得 -->
-        <component v-if="!isChart && comp" :is="comp" :schema="material.schema" />
-        <!-- 图表：图标预览 -->
-        <Icon v-else :icon="material.icon" width="40" />
+        <!-- 渲染真实迷你预览，所见即所得 -->
+        <component :is="comp" :schema="material.schema" />
       </div>
     </div>
     <div class="drag-hint">拖拽到画布</div>
