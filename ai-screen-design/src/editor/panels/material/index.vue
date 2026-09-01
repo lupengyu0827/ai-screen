@@ -33,7 +33,8 @@ const currentGroupMaterials = computed(() => {
         {{ groups.find((g) => g.key === activeGroup)?.name }}
         <span class="count">{{ currentGroupMaterials.length }}</span>
       </div>
-      <MaterialItem class="mt-10" v-for="item in currentGroupMaterials" :key="item.name" :material="item">
+      <MaterialItem class="mt-10" v-for="(item, i) in currentGroupMaterials" :key="item.name" :material="item"
+        :index="i">
       </MaterialItem>
     </div>
   </div>
