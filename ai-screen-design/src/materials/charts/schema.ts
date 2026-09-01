@@ -70,6 +70,26 @@ const ChartGaugeSchema = z
   })
   .describe('ECharts 仪表盘系列配置')
 
+const ChartGeoSchema = z
+  .object({
+    map: z.string().optional().describe('地图名称，如 china'),
+    roam: z.boolean().optional().describe('是否开启缩放和平移'),
+    label: JsonObjectSchema.optional().describe('地图标签样式'),
+    itemStyle: JsonObjectSchema.optional().describe('地图区域样式'),
+    emphasis: JsonObjectSchema.optional().describe('地图高亮样式'),
+  })
+  .describe('ECharts 地图坐标系配置')
+
+const ChartVisualMapSchema = z
+  .object({
+    show: z.boolean().optional().describe('是否显示图例'),
+    min: z.number().optional().describe('视觉映射最小值'),
+    max: z.number().optional().describe('视觉映射最大值'),
+    inRange: JsonObjectSchema.optional().describe('视觉映射颜色区间'),
+    textStyle: JsonObjectSchema.optional().describe('视觉映射文字样式'),
+  })
+  .describe('ECharts 视觉映射配置')
+
 export const ChartOptionSchema = z
   .object({
     color: z.array(z.string()).optional().describe('图表系列颜色列表'),
@@ -82,6 +102,8 @@ export const ChartOptionSchema = z
     yAxis: JsonObjectSchema.optional().describe('ECharts Y 轴配置'),
     radar: ChartRadarSchema.optional().describe('ECharts 雷达图坐标系配置'),
     gauge: ChartGaugeSchema.optional().describe('ECharts 仪表盘配置'),
+    geo: ChartGeoSchema.optional().describe('ECharts 地图坐标系配置'),
+    visualMap: ChartVisualMapSchema.optional().describe('ECharts 视觉映射配置'),
     series: z
       .array(JsonObjectSchema)
       .min(1)
@@ -110,7 +132,10 @@ export function createChartNodeSchema(
     | 'radar-chart'
     | 'gauge-chart'
     | 'scatter-chart'
-    | 'funnel-chart',
+    | 'funnel-chart'
+    | 'water-polo'
+    | 'word-cloud'
+    | 'map-chart',
 ) {
   return NodeBaseSchema.extend({
     type: z.literal(type).describe('图表物料的注册类型'),

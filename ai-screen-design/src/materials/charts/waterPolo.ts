@@ -1,0 +1,162 @@
+import type { MaterialDefinition } from '@/schema/material.ts'
+import { createChartNodeSchema } from './schema.js'
+
+export const waterPoloMaterial: MaterialDefinition = {
+  name: '水球图',
+  group: 'charts',
+  icon: 'mdi:water-percent',
+  configSchema: createChartNodeSchema('water-polo'),
+  setters: [
+    {
+      group: '数据',
+      type: 'number',
+      label: '数值(0~1)',
+      key: 'props.option.series.0.data.0',
+      props: { min: 0, max: 1, step: 0.01 },
+    },
+    {
+      group: '数据',
+      type: 'number',
+      label: '波纹2',
+      key: 'props.option.series.0.data.1',
+      span: 12,
+      props: { min: 0, max: 1, step: 0.01 },
+    },
+    {
+      group: '样式',
+      type: 'color',
+      label: '主色',
+      key: 'props.option.series.0.color.0',
+      span: 12,
+    },
+    {
+      group: '样式',
+      type: 'color',
+      label: '辅色',
+      key: 'props.option.series.0.color.1',
+      span: 12,
+    },
+    {
+      group: '样式',
+      type: 'color',
+      label: '边框色',
+      key: 'props.option.series.0.outline.itemStyle.borderColor',
+      span: 12,
+    },
+    {
+      group: '样式',
+      type: 'number',
+      label: '边框宽度',
+      key: 'props.option.series.0.outline.itemStyle.borderWidth',
+      span: 12,
+      props: { min: 0, max: 10 },
+    },
+    {
+      group: '样式',
+      type: 'color',
+      label: '背景色',
+      key: 'props.option.series.0.backgroundStyle.color',
+      span: 12,
+    },
+    {
+      group: '样式',
+      type: 'number',
+      label: '半径',
+      key: 'props.option.series.0.radius',
+      span: 12,
+      props: { min: 10, max: 100 },
+    },
+    {
+      group: '样式',
+      type: 'number',
+      label: '振幅',
+      key: 'props.option.series.0.amplitude',
+      span: 12,
+      props: { min: 1, max: 50 },
+    },
+    {
+      group: '标签',
+      type: 'checkbox',
+      label: '显示数值',
+      key: 'props.option.series.0.label.show',
+      span: 12,
+    },
+    {
+      group: '标签',
+      type: 'color',
+      label: '数值色',
+      key: 'props.option.series.0.label.color',
+      span: 12,
+    },
+    {
+      group: '标签',
+      type: 'number',
+      label: '数值字号',
+      key: 'props.option.series.0.label.fontSize',
+      span: 12,
+      props: { min: 10, max: 64 },
+    },
+    {
+      group: '动画',
+      type: 'checkbox',
+      label: '动画播放',
+      key: 'props.option.series.0.animation',
+      span: 12,
+    },
+  ],
+  schema: {
+    type: 'water-polo',
+    name: '水球图',
+    layout: {
+      x: 0,
+      y: 0,
+      width: 320,
+      height: 280,
+    },
+    props: {
+      option: {
+        tooltip: {
+          show: false,
+        },
+        series: [
+          {
+            type: 'liquidFill',
+            name: '水球图',
+            radius: '90%',
+            center: ['50%', '55%'],
+            amplitude: 12,
+            waveLength: '70%',
+            waveHeight: 16,
+            animation: true,
+            data: [0.6, 0.35],
+            color: ['#22d3ee', 'rgba(167,139,250,0.7)'],
+            outline: {
+              show: true,
+              borderDistance: 4,
+              itemStyle: {
+                borderColor: '#22d3ee',
+                borderWidth: 2,
+                shadowBlur: 12,
+                shadowColor: 'rgba(34,211,238,0.4)',
+              },
+            },
+            backgroundStyle: {
+              color: 'rgba(15,23,42,0.55)',
+            },
+            label: {
+              show: true,
+              color: '#ffffff',
+              insideColor: '#ffffff',
+              fontSize: 28,
+              fontWeight: 'bold',
+            },
+          },
+        ],
+      },
+    },
+  },
+  eventOptions: [
+    { label: '点击', value: 'click' },
+    { label: '组件挂载时', value: 'vnodeMounted' },
+  ],
+}

@@ -2,6 +2,8 @@
 import type { MaterialSchema } from '@/schema/material'
 
 import { init, type EChartsType } from 'echarts'
+// 注册 echarts 扩展系列：水球图
+import 'echarts-liquidfill'
 
 import { useDataSource } from '@/composables/useDataSource'
 import { applyOptionTheme, useReactiveTheme } from '@/composables/useTheme'
