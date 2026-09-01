@@ -76,23 +76,23 @@ function buildOption() {
   }
 }
 
-watch(
-  mapData,
-  () => {
+/** 刷新图表：延迟到下一宏任务，避免 setOption 在 ECharts 渲染主进程中调用 */
+function refreshChart() {
+  if (!chart) return
+  setTimeout(() => {
     if (chart) chart.setOption(buildOption())
-  },
-  { deep: true },
-)
+  }, 0)
+}
 
-// 地图类型切换：重新注册 + 更新
+// 地图数据 / 地图类型变化：重新注册 + 更新（合并监听，避免同 tick 多次 setOption）
 watch(
-  mapName,
-  async (name) => {
+  () => [mapName.value, mapData.value],
+  async ([name]) => {
     try {
       await loadAndRegister(name)
-      if (chart) chart.setOption(buildOption())
+      refreshChart()
     } catch (e) {
-      console.error('地图切换失败:', e)
+      console.error('地图更新失败:', e)
     }
   },
 )
