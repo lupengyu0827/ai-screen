@@ -101,6 +101,10 @@ const commandMap = {
     editorStore.toggleLock(editorStore.selectedNode)
     selectedTarget.value = []
   },
+  toggleVisible: () => {
+    editorStore.toggleVisible(editorStore.selectedNode)
+    selectedTarget.value = []
+  },
   group: () => editorStore.groupSelected(),
   ungroup: () => editorStore.ungroupSelected(),
   alignLeft: () => editorStore.alignNodes('left'),
@@ -117,10 +121,17 @@ function onCommand(command: string) {
   commandMap[command]()
 }
 
-/** 键盘快捷键：复制 / 粘贴 / 删除 */
+/** 键盘快捷键：复制 / 粘贴 / 删除 / 撤销 / 重做 */
 function onKeydown(e: KeyboardEvent) {
   const mod = e.metaKey || e.ctrlKey
-  if (mod && (e.key === 'c' || e.key === 'C')) {
+  if (mod && (e.key === 'z' || e.key === 'Z')) {
+    e.preventDefault()
+    if (e.shiftKey) editorStore.redo()
+    else editorStore.undo()
+  } else if (mod && (e.key === 'y' || e.key === 'Y')) {
+    e.preventDefault()
+    editorStore.redo()
+  } else if (mod && (e.key === 'c' || e.key === 'C')) {
     editorStore.copySelected()
     e.preventDefault()
   } else if (mod && (e.key === 'v' || e.key === 'V')) {
@@ -163,7 +174,7 @@ const alignActions = [
         @mousedown.self="onClearSelected">
         <el-dropdown v-for="(node, index) in nodes" :key="node.id" trigger="contextmenu" @command="onCommand">
           <div class="canvas-node" :style="getNodeStyle(node, index)" :data-node-id="node.id"
-            :data-node-locked="node.locked" @mousedown="onSelect(node, $event)">
+            :data-node-locked="node.locked" v-show="node.visible !== false" @mousedown="onSelect(node, $event)">
             <div class="canvas-node-inner h-full w-full" :style="getNodeInnerStyle(node)">
               <component :is="getMaterialComponent(node.type)" :schema="node"></component>
             </div>
@@ -175,6 +186,7 @@ const alignActions = [
             <el-dropdown-item command="moveTop">置顶</el-dropdown-item>
             <el-dropdown-item command="moveBottom">置底</el-dropdown-item>
             <el-dropdown-item command="toggleLock">{{ node.locked ? '解锁' : '锁定' }}</el-dropdown-item>
+            <el-dropdown-item command="toggleVisible">{{ node.visible === false ? '显示' : '隐藏' }}</el-dropdown-item>
             <el-dropdown-item v-if="multiSelecting" command="group">组合</el-dropdown-item>
             <el-dropdown-item v-if="isGroupSelected" command="ungroup">取消组合</el-dropdown-item>
           </template>

@@ -21,6 +21,30 @@ const { data, loading, refresh } = useDataSource(dataId)
 
 const themeKey = useReactiveTheme()
 
+// 地图名称 → 数据文件映射（public/map/*.json）
+const MAP_SOURCES: Record<string, string> = {
+  china: '/map/china.json',
+  world: '/map/world.json',
+}
+
+// 已注册的地图集合（避免重复注册）
+const registeredMaps = new Set<string>()
+
+/** 当前地图名称（geo.map），默认 china */
+const mapName = computed(() => {
+  const _option = applyOptionTheme(props.schema.props.option || {}, themeKey.value) || {}
+  return _option.geo?.map || 'china'
+})
+
+async function loadAndRegister(name: string) {
+  if (registeredMaps.has(name)) return
+  const url = MAP_SOURCES[name] || MAP_SOURCES.china
+  const res = await fetch(url)
+  const geoJson = await res.json()
+  registerMap(name, geoJson)
+  registeredMaps.add(name)
+}
+
 // 地图系列数据（name + value）
 const mapData = computed(() => {
   const _option = applyOptionTheme(props.schema.props.option || {}, themeKey.value) || {}
@@ -60,12 +84,22 @@ watch(
   { deep: true },
 )
 
+// 地图类型切换：重新注册 + 更新
+watch(
+  mapName,
+  async (name) => {
+    try {
+      await loadAndRegister(name)
+      if (chart) chart.setOption(buildOption())
+    } catch (e) {
+      console.error('地图切换失败:', e)
+    }
+  },
+)
+
 onMounted(async () => {
   try {
-    // 注册中国地图（public/map/china.json）
-    const res = await fetch('/map/china.json')
-    const geoJson = await res.json()
-    registerMap('china', geoJson)
+    await loadAndRegister(mapName.value)
 
     chart = init(chartRef.value)
     chart.setOption(buildOption())

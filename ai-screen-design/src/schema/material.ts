@@ -29,6 +29,8 @@ export interface MaterialSchema {
   type: string
   name: string
   locked?: boolean
+  // 隐藏/显示（默认显示）
+  visible?: boolean
   id: string
   layout: Layout
   style?: Record<string, any>

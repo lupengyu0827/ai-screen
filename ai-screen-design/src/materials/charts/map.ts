@@ -21,6 +21,19 @@ export const mapMaterial: MaterialDefinition = {
     },
     {
       group: '地图',
+      type: 'select',
+      label: '地图类型',
+      key: 'props.option.geo.map',
+      span: 12,
+      props: {
+        options: [
+          { label: '中国', value: 'china' },
+          { label: '世界', value: 'world' },
+        ],
+      },
+    },
+    {
+      group: '地图',
       type: 'color',
       label: '区域色',
       key: 'props.option.geo.itemStyle.areaColor',

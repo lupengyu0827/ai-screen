@@ -20,14 +20,14 @@ useDraggable('.layer-panel', nodes, { animation: 150, direction: 'horizontal' })
       <span class="count">{{ nodes.length }}</span>
     </div>
     <div class="layer-panel overflow-auto">
-      <div v-for="node in nodes" :key="node.id" :class="{ active: selectedNodeIds.includes(node.id) }"
+      <div v-for="node in nodes" :key="node.id" :class="{ active: selectedNodeIds.includes(node.id), hidden: node.visible === false }"
         @click="editorStore.selectNode(node.id)">
         <span class="node-name">
           <Icon :icon="node.locked ? 'fluent:lock-16-filled' : 'fluent:list-bar-24-filled'"></Icon>
           {{ node.name }}
         </span>
-        <span class="node-state">
-          <Icon v-if="node.locked" icon="fluent:lock-16-filled"></Icon>
+        <span class="node-state" @click.stop="editorStore.toggleVisible(node)">
+          <Icon :icon="node.visible === false ? 'mdi:eye-off-outline' : 'mdi:eye-outline'"></Icon>
         </span>
       </div>
     </div>
@@ -110,6 +110,10 @@ useDraggable('.layer-panel', nodes, { animation: 150, direction: 'horizontal' })
         background: linear-gradient(90deg, var(--bg-active), rgba(14, 138, 215, 0.4));
         border-color: #3fa9e3;
         color: #fff;
+      }
+
+      &.hidden {
+        opacity: 0.45;
       }
     }
   }

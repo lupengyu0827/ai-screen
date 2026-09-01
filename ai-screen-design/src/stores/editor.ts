@@ -6,7 +6,7 @@ import { useUndoRedo } from '@/composables/useUndoRedo'
 export type AlignType = 'left' | 'centerX' | 'right' | 'top' | 'centerY' | 'bottom' | 'distributeH' | 'distributeV'
 
 export const useEditorStore = defineStore('editor', () => {
-  const { applyChange } = useUndoRedo()
+  const { applyChange, undo, redo, canUndo, canRedo } = useUndoRedo()
 
   const panelVisible = reactive({
     material: false,
@@ -157,6 +157,11 @@ export const useEditorStore = defineStore('editor', () => {
     applyChange(node, 'locked', !node.locked)
   }
 
+  /** 隐藏/显示组件 */
+  function toggleVisible(node: MaterialSchema) {
+    applyChange(node, 'visible', node.visible === false ? true : false)
+  }
+
   function updateNode(id: string, newNode: MaterialSchema) {
     // 使用map 返回新列表 再新列表中进行替换
     const newNodes = nodes.value.map((node) => (node.id === id ? newNode : node))
@@ -285,6 +290,11 @@ export const useEditorStore = defineStore('editor', () => {
     moveTop,
     moveBottom,
     toggleLock,
+    toggleVisible,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
     updateNode,
     setPage,
     copySelected,
