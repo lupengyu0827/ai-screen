@@ -2,6 +2,7 @@ import type { MaterialSchema } from '@/schema/material'
 import type { PageSchema } from '@/schema/page'
 import { defineStore } from 'pinia'
 import { useUndoRedo } from '@/composables/useUndoRedo'
+import { genId } from '@/utils/id'
 
 export type AlignType = 'left' | 'centerX' | 'right' | 'top' | 'centerY' | 'bottom' | 'distributeH' | 'distributeV'
 
@@ -130,7 +131,7 @@ export const useEditorStore = defineStore('editor', () => {
 
   function copyNode(node: MaterialSchema) {
     const newNode = JSON.parse(JSON.stringify(node))
-    newNode.id = crypto.randomUUID()
+    newNode.id = genId()
     newNode.layout.x += 20
     newNode.layout.y += 20
 
@@ -184,7 +185,7 @@ export const useEditorStore = defineStore('editor', () => {
     if (!clipboard.value.length) return
     const pasted = clipboard.value.map((node) => {
       const clone = JSON.parse(JSON.stringify(node))
-      clone.id = crypto.randomUUID()
+      clone.id = genId()
       clone.groupId = undefined
       clone.layout = {
         ...clone.layout,
@@ -261,7 +262,7 @@ export const useEditorStore = defineStore('editor', () => {
   function groupSelected() {
     const selected = nodes.value.filter((n) => selectedNodeIds.value.includes(n.id))
     if (selected.length < 2) return
-    const groupId = crypto.randomUUID()
+    const groupId = genId()
     selected.forEach((n) => applyChange(n, 'groupId', groupId))
   }
 

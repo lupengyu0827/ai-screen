@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue'
 
 import { deepClone } from '@/utils/index'
+import { genId } from '@/utils/id'
 
 import MonacoEditor from '@/components/MonacoEditor/index.vue'
 import { fetchData, applyTransform } from '@/composables/useDataSource'
@@ -36,7 +37,7 @@ function selectDataSource(source) {
 
 function onAdd() {
   data.value.push({
-    id: crypto.randomUUID(),
+    id: genId(),
     name: '未命名',
     type: 'static',
     data: '',

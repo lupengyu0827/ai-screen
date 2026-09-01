@@ -1,4 +1,5 @@
 import type { MaterialDefinition } from '@/schema/material'
+import { genId } from '@/utils/id'
 
 const materials: MaterialDefinition[] = []
 
@@ -74,7 +75,7 @@ export function getMaterialEventOptions(type: string) {
 }
 
 export function createNode(node) {
-  return { ...node, id: crypto.randomUUID() }
+  return { ...node, id: genId() }
 }
 
 export function getMaterialsConfigSchema() {

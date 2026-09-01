@@ -1,4 +1,5 @@
 import type { PageSchema } from '@/schema/page'
+import { genId } from '@/utils/id'
 
 const SCREEN_PUBLISH = 'screen-publish'
 
@@ -18,7 +19,7 @@ export function publishPage(page: PageSchema) {
   }
 
   // 如果已存在直接用
-  const id = page.id || crypto.randomUUID()
+  const id = page.id || genId()
   value[id] = page
   page.id = id
 
