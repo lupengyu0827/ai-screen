@@ -1,42 +1,44 @@
 import type { PageSchema } from '@/schema/page'
-import { genId } from '@/utils/id'
+import { api } from '@/utils/api'
 
 const SCREEN_PUBLISH = 'screen-publish'
 
 /**
- * 存储结构
- * {
- *  id: value
- * }
+ * 保存大屏到后端；同时写一份到 localStorage 作为离线兜底（兼容历史数据）。
+ * - 已有 id → PUT 更新
+ * - 无 id → POST 创建（后端生成 id）
  */
-export function publishPage(page: PageSchema) {
-  let value: string | Record<string, PageSchema> = localStorage.getItem(SCREEN_PUBLISH)
+export async function publishPage(page: PageSchema) {
+  const { data } = page.id
+    ? await api.updatePage(page.id, page)
+    : await api.createPage(page)
 
-  if (value) {
-    value = JSON.parse(value)
-  } else {
-    value = {}
+  // 同步写 localStorage 兜底
+  try {
+    const raw = localStorage.getItem(SCREEN_PUBLISH)
+    const map = raw ? JSON.parse(raw) : {}
+    map[data.id] = page
+    page.id = data.id
+    localStorage.setItem(SCREEN_PUBLISH, JSON.stringify(map))
+  } catch {
+    // localStorage 不可用时忽略，不影响后端保存
   }
 
-  // 如果已存在直接用
-  const id = page.id || genId()
-  value[id] = page
-  page.id = id
-
-  localStorage.setItem(SCREEN_PUBLISH, JSON.stringify(value))
-  // TODO: 发布到服务器
-
-  return id
+  return data.id
 }
 
-export function getPublishedPage(id: string) {
-  const value = localStorage.getItem(SCREEN_PUBLISH)
-
-  const map = JSON.parse(value || '{}')
-
-  const page = map[id]
-  if (!page) {
-    throw new Error('数据库为查到id为' + id + '的数据')
+/**
+ * 从后端读取大屏；未找到时回退 localStorage（兼容历史本地数据）。
+ */
+export async function getPublishedPage(id: string): Promise<PageSchema> {
+  try {
+    const { data } = await api.getPage(id)
+    return data as PageSchema
+  } catch (error) {
+    // 后端没有 → 回退本地
+    const raw = localStorage.getItem(SCREEN_PUBLISH)
+    const map = raw ? JSON.parse(raw) : {}
+    if (map[id]) return map[id] as PageSchema
+    throw error
   }
-  return map[id]
 }

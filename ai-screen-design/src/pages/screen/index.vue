@@ -12,17 +12,23 @@ defineComponent({
 
 const route = useRoute()
 
-let page: PageSchema
-try {
-  page = getPublishedPage(route.query.id as string)
-} catch {
-  // 未找到已发布页面（首次访问 / 数据被清空）时，提供空白默认页，避免预览白屏
-  page = {
-    canvas: { width: 1800, height: 1169, backgroundColor: 'var(--bg-base)' },
-    nodes: [],
-    dataSources: [],
+const emptyPage: PageSchema = {
+  canvas: { width: 1800, height: 1169, backgroundColor: 'var(--bg-base)' },
+  nodes: [],
+  dataSources: [],
+}
+
+// 从后端读取已发布页面；未找到（首次访问/数据被清空）时提供空白默认页，避免预览白屏
+const page = ref<PageSchema>(emptyPage)
+
+async function loadPage() {
+  try {
+    page.value = await getPublishedPage(route.query.id as string)
+  } catch {
+    page.value = emptyPage
   }
 }
+loadPage()
 </script>
 
 <template>

@@ -14,7 +14,15 @@ defineComponent({
 
 const props = defineProps<{ page: PageSchema }>()
 
+// props.page 可能是异步加载的（后端读取），初始为空页后更新，需 watch 同步
 const runtimePage = ref(props.page)
+watch(
+  () => props.page,
+  (val) => {
+    runtimePage.value = val
+  },
+  { deep: false },
+)
 const context = createRuntimeContext(runtimePage)
 
 const canvas = computed(() => {

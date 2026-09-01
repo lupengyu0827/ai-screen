@@ -90,11 +90,15 @@ function onPreview() {
   router.push('/preview')
 }
 
-function onPublish() {
-  // 调用发布方法
-  const id = publishPage(page.value)
-
-  router.push('/screen?id=' + id)
+async function onPublish() {
+  // 调用发布方法（保存到后端）
+  try {
+    const id = await publishPage(page.value)
+    ElMessage.success('发布成功')
+    router.push('/screen?id=' + id)
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : '发布失败')
+  }
 }
 
 function showAiPanel() {
