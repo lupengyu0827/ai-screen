@@ -4,7 +4,7 @@ import { createChartNodeSchema } from './schema.js'
 export const barMaterial: MaterialDefinition = {
   name: '柱状图',
   group: 'charts',
-  icon: 'si:bar-chart-duotone',
+  icon: 'mdi:chart-bar',
   configSchema: createChartNodeSchema('bar-chart'),
   setters: [
     {

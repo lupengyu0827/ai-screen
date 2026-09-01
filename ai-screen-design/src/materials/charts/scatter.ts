@@ -4,7 +4,7 @@ import { createChartNodeSchema } from './schema.js'
 export const scatterMaterial: MaterialDefinition = {
   name: '散点图',
   group: 'charts',
-  icon: 'bx:scatter-chart',
+  icon: 'mdi:chart-scatter-plot',
   configSchema: createChartNodeSchema('scatter-chart'),
   setters: [
     {

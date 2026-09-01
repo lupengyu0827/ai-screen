@@ -1,9 +1,23 @@
 <script setup lang="ts">
+import { getMaterialComponent } from '@/materials'
+
 defineComponent({
   name: 'MaterialItem',
 })
 
 const props = defineProps(['material'])
+
+/** 该物料对应的渲染组件（图表类走 icon 预览，其余渲染真实迷你预览） */
+const comp = computed(() => getMaterialComponent(props.material.schema.type))
+const isChart = computed(() => props.material.group === 'charts')
+
+/** 预览区按物料原始宽高比保持比例，避免变形 */
+const ratio = computed(() => {
+  const l = props.material.schema.layout || {}
+  const w = l.width || 320
+  const h = l.height || 200
+  return h / w
+})
 
 function onStart(e: DragEvent) {
   e.dataTransfer?.setData('schema', JSON.stringify(props.material.schema))
@@ -13,8 +27,13 @@ function onStart(e: DragEvent) {
 <template>
   <div class="material-item" draggable="true" @dragstart="onStart">
     <div class="title">{{ material.name }}</div>
-    <div class="icon">
-      <Icon :icon="material.icon" width="64"></Icon>
+    <div class="preview" :style="{ paddingBottom: (ratio * 100).toFixed(1) + '%' }">
+      <div class="preview-inner">
+        <!-- 非图表：渲染真实迷你预览，所见即所得 -->
+        <component v-if="!isChart && comp" :is="comp" :schema="material.schema" />
+        <!-- 图表：图标预览 -->
+        <Icon v-else :icon="material.icon" width="40" />
+      </div>
     </div>
     <div class="drag-hint">拖拽到画布</div>
   </div>
@@ -24,7 +43,6 @@ function onStart(e: DragEvent) {
 .material-item {
   cursor: grab;
   background: var(--bg-elevated);
-  height: 110px;
   padding: 8px 12px;
   display: flex;
   flex-direction: column;
@@ -42,12 +60,21 @@ function onStart(e: DragEvent) {
     text-overflow: ellipsis;
   }
 
-  .icon {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--text-secondary);
+  .preview {
+    position: relative;
+    width: 100%;
+    margin-top: 4px;
+    flex: none;
+
+    .preview-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: var(--text-secondary);
+    }
   }
 
   .drag-hint {
@@ -65,7 +92,7 @@ function onStart(e: DragEvent) {
     box-shadow: var(--shadow-card);
     background: var(--bg-hover);
 
-    .icon {
+    .preview-inner {
       color: var(--accent);
     }
 

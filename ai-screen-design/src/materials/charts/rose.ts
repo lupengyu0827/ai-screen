@@ -4,7 +4,7 @@ import { createChartNodeSchema } from './schema.js'
 export const roseMaterial: MaterialDefinition = {
   name: '南丁格尔玫瑰图',
   group: 'charts',
-  icon: 'si:pie-chart-alt-2',
+  icon: 'mdi:chart-arc',
   configSchema: createChartNodeSchema('rose-chart'),
   setters: [
     {

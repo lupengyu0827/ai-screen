@@ -7,7 +7,7 @@ import { ImageSchema, VideoSchema, IframeSchema } from './schema.js'
 
 const imageMaterial: MaterialDefinition = {
   name: '图片',
-  icon: 'fluent-color:image-20',
+  icon: 'mdi:image-outline',
   group: 'media',
   configSchema: ImageSchema,
   setters: [

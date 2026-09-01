@@ -4,7 +4,7 @@ import { createChartNodeSchema } from './schema.js'
 export const radarMaterial: MaterialDefinition = {
   name: '雷达图',
   group: 'charts',
-  icon: 'fluent-color:radar-20',
+  icon: 'mdi:radar',
   configSchema: createChartNodeSchema('radar-chart'),
   setters: [
     {

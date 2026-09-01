@@ -9,7 +9,7 @@ import { FlopSchema, ProgressSchema, RankListSchema, RingProgressSchema, Carouse
 
 const numberFlopMaterial: MaterialDefinition = {
   name: '数字翻牌器',
-  icon: 'fluent-color:number-symbol-20',
+  icon: 'mdi:numeric',
   group: 'number',
   configSchema: FlopSchema,
   setters: [
@@ -96,7 +96,7 @@ const numberFlopMaterial: MaterialDefinition = {
 
 const progressMaterial: MaterialDefinition = {
   name: '进度条',
-  icon: 'fluent-color:data-bar-horizontal-20',
+  icon: 'mdi:progress-check',
   group: 'number',
   configSchema: ProgressSchema,
   setters: [
@@ -169,7 +169,7 @@ const progressMaterial: MaterialDefinition = {
 
 const rankListMaterial: MaterialDefinition = {
   name: '排行榜',
-  icon: 'fluent-color:top-rated-20',
+  icon: 'mdi:format-list-numbered',
   group: 'number',
   configSchema: RankListSchema,
   setters: [
@@ -241,7 +241,7 @@ const rankListMaterial: MaterialDefinition = {
 
 const ringProgressMaterial: MaterialDefinition = {
   name: '环形进度',
-  icon: 'lets-icons:progress-duotone',
+  icon: 'mdi:chart-donut-variant',
   group: 'number',
   configSchema: RingProgressSchema,
   setters: [
@@ -335,7 +335,7 @@ const ringProgressMaterial: MaterialDefinition = {
 
 const carouselTableMaterial: MaterialDefinition = {
   name: '轮播表格',
-  icon: 'fluent-color:table-20',
+  icon: 'mdi:table-large',
   group: 'number',
   configSchema: CarouselTableSchema,
   setters: [

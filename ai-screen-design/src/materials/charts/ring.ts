@@ -4,7 +4,7 @@ import { createChartNodeSchema } from './schema.js'
 export const ringMaterial: MaterialDefinition = {
   name: '环形图',
   group: 'charts',
-  icon: 'si:donut-chart-duotone',
+  icon: 'mdi:chart-donut',
   configSchema: createChartNodeSchema('ring-chart'),
   setters: [
     {

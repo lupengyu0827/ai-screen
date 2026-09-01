@@ -4,7 +4,7 @@ import { createChartNodeSchema } from './schema.js'
 export const pieMaterial: MaterialDefinition = {
   name: '饼图',
   group: 'charts',
-  icon: 'si:pie-chart-duotone',
+  icon: 'mdi:chart-pie',
   configSchema: createChartNodeSchema('pie-chart'),
   setters: [
     {

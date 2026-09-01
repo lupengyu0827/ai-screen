@@ -4,7 +4,7 @@ import { createChartNodeSchema } from './schema.js'
 export const gaugeMaterial: MaterialDefinition = {
   name: '仪表盘',
   group: 'charts',
-  icon: 'fluent-color:gauge-20',
+  icon: 'mdi:gauge',
   configSchema: createChartNodeSchema('gauge-chart'),
   setters: [
     {

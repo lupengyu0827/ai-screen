@@ -4,7 +4,7 @@ import { createChartNodeSchema } from './schema.js'
 export const funnelMaterial: MaterialDefinition = {
   name: '漏斗图',
   group: 'charts',
-  icon: 'fluent-mdl2:funnel-chart',
+  icon: 'mdi:chart-ppf',
   configSchema: createChartNodeSchema('funnel-chart'),
   setters: [
     {

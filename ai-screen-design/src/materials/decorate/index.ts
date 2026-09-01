@@ -8,18 +8,18 @@ import { createBorderBoxSchema, DividerSchema, createDecorationSchema, TitleSche
 
 /** 边框系列：款式 -> (名称, 图标, 默认宽高) */
 const BORDER_VARIANTS: Record<string, [string, string, number, number]> = {
-  '01': ['边框·科技直角', 'fluent-color:border-20', 320, 200],
-  '02': ['边框·渐变描边', 'fluent:border-all-24-regular', 320, 200],
-  '03': ['边框·圆弧四角', 'fluent:border-rounded-24-regular', 320, 200],
-  '04': ['边框·数字科技', 'fluent:border-top-thick-24-regular', 320, 200],
-  '05': ['边框·双层内嵌', 'fluent:border-inside-24-regular', 320, 200],
-  '06': ['边框·侧边流光', 'fluent:border-left-right-24-regular', 320, 200],
-  '07': ['边框·标题栏', 'fluent:border-top-bottom-24-regular', 360, 60],
-  '08': ['边框·星点', 'fluent:star-four-points-24-regular', 320, 200],
-  '09': ['边框·折线角标', 'fluent:border-style-24-regular', 320, 200],
-  '10': ['边框·光晕', 'fluent:border-all-20-regular', 320, 200],
-  '11': ['边框·内衬菱形', 'fluent:border-inside-24-regular', 320, 200],
-  '12': ['边框·流光标题', 'fluent:border-top-thick-24-regular', 360, 60],
+  '01': ['边框·科技直角', 'mdi:border-all-variant', 320, 200],
+  '02': ['边框·渐变描边', 'mdi:border-all', 320, 200],
+  '03': ['边框·圆弧四角', 'mdi:border-radius', 320, 200],
+  '04': ['边框·数字科技', 'mdi:border-top-variant', 320, 200],
+  '05': ['边框·双层内嵌', 'mdi:border-inside', 320, 200],
+  '06': ['边框·侧边流光', 'mdi:border-left-right', 320, 200],
+  '07': ['边框·标题栏', 'mdi:border-top-bottom', 360, 60],
+  '08': ['边框·星点', 'mdi:star-four-points', 320, 200],
+  '09': ['边框·折线角标', 'mdi:border-style', 320, 200],
+  '10': ['边框·光晕', 'mdi:border-all', 320, 200],
+  '11': ['边框·内衬菱形', 'mdi:border-inside', 320, 200],
+  '12': ['边框·流光标题', 'mdi:border-top-variant', 360, 60],
 }
 
 const borderMaterials: MaterialDefinition[] = Object.entries(BORDER_VARIANTS).map(([variant, meta]) => {
@@ -90,7 +90,7 @@ const borderMaterials: MaterialDefinition[] = Object.entries(BORDER_VARIANTS).ma
 
 const dividerMaterial: MaterialDefinition = {
   name: '分割线',
-  icon: 'fluent:divider-tall-20-filled',
+  icon: 'mdi:minus',
   group: 'decorate',
   configSchema: DividerSchema,
   setters: [
@@ -146,9 +146,9 @@ const dividerMaterial: MaterialDefinition = {
 
 /** 动态装饰线系列 */
 const DECO_VARIANTS: Record<string, [string, string, number, number]> = {
-  'line-1': ['装饰线·流光', 'fluent:line-flow-24-regular', 320, 12],
-  'line-2': ['装饰线·双向', 'fluent:line-horizontal-3-20-regular', 320, 12],
-  dot: ['装饰线·点阵', 'fluent:circle-small-20-regular', 320, 12],
+  'line-1': ['装饰线·流光', 'mdi:wave', 320, 12],
+  'line-2': ['装饰线·双向', 'mdi:minus', 320, 12],
+  dot: ['装饰线·点阵', 'mdi:circle-small', 320, 12],
 }
 
 const decorationMaterials: MaterialDefinition[] = Object.entries(DECO_VARIANTS).map(([variant, meta]) => {
@@ -198,7 +198,7 @@ const decorationMaterials: MaterialDefinition[] = Object.entries(DECO_VARIANTS).
 /** 大屏标题装饰 */
 const titleMaterial: MaterialDefinition = {
   name: '标题',
-  icon: 'fluent:text-header-1-20-filled',
+  icon: 'mdi:format-title',
   group: 'decorate',
   configSchema: TitleSchema,
   setters: [
