@@ -5,6 +5,7 @@ export const scatterMaterial: MaterialDefinition = {
   name: '散点图',
   group: 'charts',
   icon: 'mdi:chart-scatter-plot',
+  preview: '/materials/thumbs/scatter-chart.png',
   configSchema: createChartNodeSchema('scatter-chart'),
   setters: [
     {

@@ -60,8 +60,9 @@ function onStart(e: DragEvent) {
     <div class="title">{{ material.name }}</div>
     <div class="preview" :style="{ paddingBottom: (ratio * 100).toFixed(1) + '%' }">
       <div class="preview-inner">
-        <!-- 渲染真实迷你预览，所见即所得（延迟挂载 + 图表关动画） -->
-        <component v-if="render && comp" :is="comp" :schema="previewSchema" />
+        <!-- 有静态示例图（如 ECharts 官网缩略图）优先展示，否则渲染真实迷你预览 -->
+        <img v-if="material.preview" :src="material.preview" class="preview-img" draggable="false" />
+        <component v-else-if="render && comp" :is="comp" :schema="previewSchema" />
       </div>
     </div>
     <div class="drag-hint">拖拽到画布</div>
@@ -103,6 +104,12 @@ function onStart(e: DragEvent) {
       align-items: center;
       overflow: hidden;
       color: var(--text-secondary);
+
+      .preview-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
     }
   }
 

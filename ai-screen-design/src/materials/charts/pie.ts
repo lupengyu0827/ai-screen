@@ -5,6 +5,7 @@ export const pieMaterial: MaterialDefinition = {
   name: '饼图',
   group: 'charts',
   icon: 'mdi:chart-pie',
+  preview: '/materials/thumbs/pie-chart.png',
   configSchema: createChartNodeSchema('pie-chart'),
   setters: [
     {

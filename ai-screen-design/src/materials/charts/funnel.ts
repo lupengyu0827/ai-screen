@@ -5,6 +5,7 @@ export const funnelMaterial: MaterialDefinition = {
   name: '漏斗图',
   group: 'charts',
   icon: 'mdi:chart-ppf',
+  preview: '/materials/thumbs/funnel-chart.png',
   configSchema: createChartNodeSchema('funnel-chart'),
   setters: [
     {

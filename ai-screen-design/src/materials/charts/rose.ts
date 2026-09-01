@@ -5,6 +5,7 @@ export const roseMaterial: MaterialDefinition = {
   name: '南丁格尔玫瑰图',
   group: 'charts',
   icon: 'mdi:chart-arc',
+  preview: '/materials/thumbs/rose-chart.png',
   configSchema: createChartNodeSchema('rose-chart'),
   setters: [
     {

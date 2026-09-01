@@ -5,6 +5,7 @@ export const barMaterial: MaterialDefinition = {
   name: '柱状图',
   group: 'charts',
   icon: 'mdi:chart-bar',
+  preview: '/materials/thumbs/bar-chart.png',
   configSchema: createChartNodeSchema('bar-chart'),
   setters: [
     {

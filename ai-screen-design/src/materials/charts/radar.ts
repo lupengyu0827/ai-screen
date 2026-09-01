@@ -5,6 +5,7 @@ export const radarMaterial: MaterialDefinition = {
   name: '雷达图',
   group: 'charts',
   icon: 'mdi:radar',
+  preview: '/materials/thumbs/radar-chart.png',
   configSchema: createChartNodeSchema('radar-chart'),
   setters: [
     {

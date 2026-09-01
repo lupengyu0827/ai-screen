@@ -5,6 +5,7 @@ export const gaugeMaterial: MaterialDefinition = {
   name: '仪表盘',
   group: 'charts',
   icon: 'mdi:gauge',
+  preview: '/materials/thumbs/gauge-chart.png',
   configSchema: createChartNodeSchema('gauge-chart'),
   setters: [
     {

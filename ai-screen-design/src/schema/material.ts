@@ -58,6 +58,8 @@ export interface MaterialDefinition {
   name: string
   group: string
   icon: string
+  /** 物料库卡片展示图（静态图，如 ECharts 官网示例缩略图）；缺省时回退为渲染真实组件迷你预览 */
+  preview?: string
   configSchema: ZodType
   setters: SettersSchema[]
   eventOptions?: EventOption[]

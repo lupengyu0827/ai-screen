@@ -5,6 +5,7 @@ export const lineMaterial: MaterialDefinition = {
   name: '折线图',
   group: 'charts',
   icon: 'mdi:chart-line',
+  preview: '/materials/thumbs/line-chart.png',
   configSchema: createChartNodeSchema('line-chart'),
   setters: [
     {

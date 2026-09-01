@@ -5,6 +5,7 @@ export const ringMaterial: MaterialDefinition = {
   name: '环形图',
   group: 'charts',
   icon: 'mdi:chart-donut',
+  preview: '/materials/thumbs/ring-chart.png',
   configSchema: createChartNodeSchema('ring-chart'),
   setters: [
     {

@@ -5,6 +5,7 @@ export const areaMaterial: MaterialDefinition = {
   name: '面积图',
   group: 'charts',
   icon: 'mdi:chart-area',
+  preview: '/materials/thumbs/area-chart.png',
   configSchema: createChartNodeSchema('area-chart'),
   setters: [
     {
