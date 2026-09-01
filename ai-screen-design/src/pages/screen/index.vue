@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getPublishedPage } from '@/utils/publish';
+import type { PageSchema } from '@/schema/page';
 
 import ScreenRenderer from '@/components/ScreenRenderer/index.vue'
 
@@ -11,7 +12,17 @@ defineComponent({
 
 const route = useRoute()
 
-const page = getPublishedPage(route.query.id as string)
+let page: PageSchema
+try {
+  page = getPublishedPage(route.query.id as string)
+} catch {
+  // 未找到已发布页面（首次访问 / 数据被清空）时，提供空白默认页，避免预览白屏
+  page = {
+    canvas: { width: 1800, height: 1169, backgroundColor: 'var(--bg-base)' },
+    nodes: [],
+    dataSources: [],
+  }
+}
 </script>
 
 <template>

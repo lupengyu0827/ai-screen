@@ -24,9 +24,13 @@ const editorStore = useEditorStore()
 
 const pageId = route.query.id
 if (pageId) {
-  // 如果有就去查询数据库
-  const page = getPublishedPage(pageId as string)
-  editorStore.setPage(page)
+  try {
+    // 如果有就去查询数据库
+    const page = getPublishedPage(pageId as string)
+    editorStore.setPage(page)
+  } catch {
+    // 找不到对应页面数据（如首次访问/清空存储）时，使用 store 默认空白画布，避免编辑器白屏
+  }
 }
 
 const { dataSources } = storeToRefs(editorStore)
