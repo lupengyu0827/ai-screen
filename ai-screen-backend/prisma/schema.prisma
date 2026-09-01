@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+/// 大屏页面（作品）
+model Page {
+  id          String   @id @default(cuid())
+  title       String   @default("未命名大屏")
+  description String?
+  /// 画布配置：{ width, height, backgroundColor }
+  canvas      Json
+  /// 组件节点列表：MaterialSchema[]
+  nodes       Json
+  /// 数据源列表：DataSourceSchema[]
+  dataSources Json
+  /// 是否已发布
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("pages")
+}
