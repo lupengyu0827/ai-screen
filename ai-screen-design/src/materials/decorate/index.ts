@@ -3,7 +3,8 @@ import type { MaterialDefinition } from '@/schema/material'
 import BorderBox from './BorderBox.vue'
 import Divider from './Divider.vue'
 import Decoration from './Decoration.vue'
-import { createBorderBoxSchema, DividerSchema, createDecorationSchema } from './schema.js'
+import TitleBox from './TitleBox.vue'
+import { createBorderBoxSchema, DividerSchema, createDecorationSchema, TitleSchema } from './schema.js'
 
 /** 边框系列：款式 -> (名称, 图标, 默认宽高) */
 const BORDER_VARIANTS: Record<string, [string, string, number, number]> = {
@@ -15,6 +16,10 @@ const BORDER_VARIANTS: Record<string, [string, string, number, number]> = {
   '06': ['边框·侧边流光', 'fluent:border-left-right-24-regular', 320, 200],
   '07': ['边框·标题栏', 'fluent:border-top-bottom-24-regular', 360, 60],
   '08': ['边框·星点', 'fluent:star-four-points-24-regular', 320, 200],
+  '09': ['边框·折线角标', 'fluent:border-style-24-regular', 320, 200],
+  '10': ['边框·光晕', 'fluent:border-all-20-regular', 320, 200],
+  '11': ['边框·内衬菱形', 'fluent:border-inside-24-regular', 320, 200],
+  '12': ['边框·流光标题', 'fluent:border-top-thick-24-regular', 360, 60],
 }
 
 const borderMaterials: MaterialDefinition[] = Object.entries(BORDER_VARIANTS).map(([variant, meta]) => {
@@ -190,8 +195,80 @@ const decorationMaterials: MaterialDefinition[] = Object.entries(DECO_VARIANTS).
   }
 })
 
+/** 大屏标题装饰 */
+const titleMaterial: MaterialDefinition = {
+  name: '标题',
+  icon: 'fluent:text-header-1-20-filled',
+  group: 'decorate',
+  configSchema: TitleSchema,
+  setters: [
+    {
+      type: 'input',
+      label: '主标题',
+      key: 'props.title',
+    },
+    {
+      type: 'input',
+      label: '副标题',
+      key: 'props.subTitle',
+    },
+    {
+      type: 'number',
+      label: '标题字号',
+      key: 'props.fontSize',
+      span: 12,
+      props: { min: 12, max: 80 },
+    },
+    {
+      type: 'color',
+      label: '装饰色',
+      key: 'props.color',
+      span: 12,
+    },
+    {
+      type: 'color',
+      label: '标题颜色',
+      key: 'props.titleColor',
+      span: 12,
+    },
+    {
+      type: 'color',
+      label: '副标题颜色',
+      key: 'props.subTitleColor',
+      span: 12,
+    },
+    {
+      type: 'checkbox',
+      label: '两侧装饰线',
+      key: 'props.showDeco',
+      span: 12,
+    },
+  ],
+  eventOptions: [
+    { label: '点击', value: 'click' },
+    { label: '鼠标移入', value: 'mouseover' },
+    { label: '鼠标移出', value: 'mouseout' },
+    { label: '组件挂载时', value: 'vnodeMounted' },
+  ],
+  schema: {
+    type: 'title-box',
+    name: '标题',
+    layout: { x: 0, y: 0, width: 360, height: 80 },
+    props: {
+      title: '数据可视化大屏',
+      subTitle: 'DATA VISUALIZATION',
+      color: '#22d3ee',
+      titleColor: '#e2f3ff',
+      subTitleColor: 'rgba(203,213,225,0.75)',
+      fontSize: 28,
+      showDeco: true,
+    },
+  },
+}
+
 export function install(register) {
   borderMaterials.forEach((m) => register(m, BorderBox))
   register(dividerMaterial, Divider)
   decorationMaterials.forEach((m) => register(m, Decoration))
+  register(titleMaterial, TitleBox)
 }

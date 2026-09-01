@@ -45,3 +45,19 @@ export function createDecorationSchema(type: string) {
       .describe('动态装饰线的业务属性'),
   })
 }
+
+/** 标题装饰 schema */
+export const TitleSchema = NodeBaseSchema.extend({
+  type: z.literal('title-box').describe('标题装饰物料类型'),
+  props: z
+    .object({
+      title: z.string().describe('主标题文字'),
+      subTitle: z.string().describe('副标题文字，留空则不显示'),
+      color: z.string().describe('装饰线主色'),
+      titleColor: z.string().describe('主标题文字颜色'),
+      subTitleColor: z.string().describe('副标题文字颜色'),
+      fontSize: z.number().describe('主标题字号，单位为像素'),
+      showDeco: z.boolean().describe('是否显示两侧装饰线'),
+    })
+    .describe('标题装饰的业务属性'),
+})

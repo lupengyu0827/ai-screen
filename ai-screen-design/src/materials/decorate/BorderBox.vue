@@ -131,11 +131,57 @@ const edgeDots = [
     </template>
 
     <!-- 08 星点边框：四角 L + 边中点发光点 -->
-    <template v-else>
+    <template v-else-if="variant === '08'">
       <span v-for="c in cornersL" :key="c.pos" class="absolute" :class="[c.pos, c.border]" :style="cornerLStyle(color)"></span>
       <span v-for="d in edgeDots" :key="d.pos" class="absolute rounded-full" :class="d.pos" :style="{ width: d.size, height: d.size, background: color, boxShadow: `0 0 10px ${color}`, zIndex: 2 }"></span>
       <div v-if="p.title" class="absolute top-2 left-4 z-10" :style="{ color: titleColor }">
         <span class="font-bold tracking-wide text-[12px]">{{ p.title }}</span>
+      </div>
+    </template>
+
+    <!-- 09 折线角标：四角 L + 内缩小折线 -->
+    <template v-else-if="variant === '09'">
+      <span v-for="c in cornersL" :key="c.pos" class="absolute" :class="[c.pos, c.border]" :style="cornerLStyle(color)"></span>
+      <div class="absolute top-2 left-2 w-10 h-10" :style="{ borderTop: `2px solid ${color}88`, borderLeft: `2px solid ${color}88`, borderTopLeftRadius: '6px' }"></div>
+      <div class="absolute top-2 right-2 w-10 h-10" :style="{ borderTop: `2px solid ${color}88`, borderRight: `2px solid ${color}88`, borderTopRightRadius: '6px' }"></div>
+      <div class="absolute bottom-2 left-2 w-10 h-10" :style="{ borderBottom: `2px solid ${color}88`, borderLeft: `2px solid ${color}88`, borderBottomLeftRadius: '6px' }"></div>
+      <div class="absolute bottom-2 right-2 w-10 h-10" :style="{ borderBottom: `2px solid ${color}88`, borderRight: `2px solid ${color}88`, borderBottomRightRadius: '6px' }"></div>
+      <div v-if="p.title" class="absolute top-4 left-1/2 -translate-x-1/2 z-10" :style="{ color: titleColor }">
+        <span class="font-bold tracking-widest text-[13px]">{{ p.title }}</span>
+      </div>
+    </template>
+
+    <!-- 10 光晕渐变：四边渐变 + 外发光 -->
+    <template v-else-if="variant === '10'">
+      <div class="absolute inset-0" :style="{ borderRadius: radius + 'px', boxShadow: `inset 0 0 18px ${color}33, 0 0 10px ${color}22` }"></div>
+      <div class="absolute top-0 left-0 right-0 h-px" :style="{ background: `linear-gradient(90deg, transparent, ${color}, transparent)`, boxShadow: `0 0 8px ${color}` }"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-px" :style="{ background: `linear-gradient(90deg, transparent, ${color}, transparent)`, boxShadow: `0 0 8px ${color}` }"></div>
+      <div class="absolute top-0 left-0 bottom-0 w-px" :style="{ background: `linear-gradient(180deg, transparent, ${color}, transparent)`, boxShadow: `0 0 8px ${color}` }"></div>
+      <div class="absolute top-0 right-0 bottom-0 w-px" :style="{ background: `linear-gradient(180deg, transparent, ${color}, transparent)`, boxShadow: `0 0 8px ${color}` }"></div>
+      <div v-if="p.title" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10" :style="{ color: titleColor }">
+        <span class="font-bold tracking-[0.3em] text-[14px]">{{ p.title }}</span>
+      </div>
+    </template>
+
+    <!-- 11 内衬双线 + 边中点菱形 -->
+    <template v-else-if="variant === '11'">
+      <div class="absolute inset-0" :style="{ border: `1px solid ${color}44`, borderRadius: radius + 'px' }"></div>
+      <div class="absolute" :style="{ top: '5px', left: '5px', right: '5px', bottom: '5px', border: `1px solid ${color}33`, borderRadius: (Math.max((radius||0)-4, 0)) + 'px' }"></div>
+      <span v-for="d in edgeDots" :key="d.pos" class="absolute" :class="d.pos" :style="{ width: '8px', height: '8px', background: color, transform: (d.pos.includes('left-1/2') ? 'translateX(-50%)' : 'translateY(-50%)') + ' rotate(45deg)', boxShadow: `0 0 6px ${color}`, zIndex: 2 }"></span>
+      <div v-if="p.title" class="absolute top-2 left-3 z-10" :style="{ color: titleColor }">
+        <span class="font-bold tracking-wide text-[12px]">{{ p.title }}</span>
+      </div>
+    </template>
+
+    <!-- 12 顶部流光标题条 + 底边刻度 -->
+    <template v-else>
+      <div class="absolute top-0 left-0 right-0 h-32 overflow-hidden" :style="{ background: `linear-gradient(90deg, transparent 0%, ${color}55 20%, ${color}aa 50%, ${color}55 80%, transparent 100%)` }"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-px" :style="{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }"></div>
+      <div class="absolute bottom-0 left-4 right-4 flex justify-between opacity-70" :style="{ color }">
+        <span v-for="i in 12" :key="i" class="w-px" :style="{ height: i % 3 === 0 ? '10px' : '5px', background: color }"></span>
+      </div>
+      <div v-if="p.title" class="absolute top-0 left-0 right-0 h-32 flex items-center justify-center z-10" :style="{ color: titleColor }">
+        <span class="font-bold tracking-[0.2em] text-[13px]">{{ p.title }}</span>
       </div>
     </template>
   </div>
